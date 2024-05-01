@@ -1,6 +1,6 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable, tap, switchMap, forkJoin, mergeMap } from 'rxjs';
+import { Observable, forkJoin, mergeMap } from 'rxjs';
 import { Data, Graph, CyclistDataset, WeatherDataset, FinalData, DataSortedForGraph, WeatherDataSortedForGraph } from 'src/app/shared/models/data.model';
 import { DataService } from 'src/app/shared/services/data/data.service';
 import { WeatherService } from 'src/app/shared/services/weather/weather.service';
@@ -19,7 +19,7 @@ export class DataComponent implements OnInit {
     private weatherService: WeatherService
   ) { }
 
-  selectedTime: string = 'today'; // Predvolená hodnota "Dnes"
+  selectedTime: string = 'today'; 
   graphs: Graph[] = [];
   pickedLocations: Location[] = [];
   locations: Location[] = [];
@@ -70,9 +70,6 @@ export class DataComponent implements OnInit {
     }
     return this.form.value.map((location: any) => location.location).join(', ');
   }
-
- 
-  
 
 
   // ------------------------------------------------------- //
@@ -127,7 +124,6 @@ export class DataComponent implements OnInit {
       const lowestDayData: { time: string; cyclists: number; temperature: number; rain: number }[] = [];
       const averageDayData: { time: string; cyclists: number; temperature: number; rain: number }[] = [];
 
-      // Objekty pre ukladanie hodnôt pre neskôršie výpočty priemeru
       const highDataByTime: { [key: string]: { cyclists: number[]; temperature: number[]; rain: number[] } } = {};
       const lowDataByTime: { [key: string]: { cyclists: number[]; temperature: number[]; rain: number[] } } = {};
       const averageDataByTime: { [key: string]: { cyclists: number[]; temperature: number[]; rain: number[] } } = {};
@@ -141,9 +137,7 @@ export class DataComponent implements OnInit {
           const temperature = sensorData[timestamp].temperature;
           const rain = sensorData[timestamp].rain;
 
-          // Kontrola, či je čas menší ako 19:00 (7:00 PM)
           if(parseInt(time.split(':')[0]) <= 19){
-            // Uloženie dát podľa dňa v týždni
             switch (dayOfWeek){
               case highestDay:
                 highestDayData.push({ time, cyclists, temperature, rain });
@@ -160,13 +154,8 @@ export class DataComponent implements OnInit {
         }
       }
 
-      // Výpočet priemeru pre "high"
       this.calculateAverageForTimeData(highestDayData, highDataByTime);
-
-      // Výpočet priemeru pre "low"
       this.calculateAverageForTimeData(lowestDayData, lowDataByTime);
-
-      // Výpočet priemeru pre "average"
       this.calculateAverageForTimeData(averageDayData, averageDataByTime);
 
       result.push({
@@ -179,14 +168,9 @@ export class DataComponent implements OnInit {
       });
     });
 
-    console.log("Result in top day: ", result);
-    
-
-    
     return result;
   }
 
-  // Pomocná metóda pre pridávanie hodnôt do objektu podľa času
   addToTimeData(timeData: { [key: string]: { cyclists: number[]; temperature: number[]; rain: number[] } }, time: string, cyclists: number, temperature: number, rain: number) {
     if (!timeData[time]) {
       timeData[time] = { cyclists: [], temperature: [], rain: [] };
@@ -196,7 +180,6 @@ export class DataComponent implements OnInit {
     timeData[time].rain.push(rain);
   }
 
-  // Pomocná metóda pre výpočet priemeru pre jednotlivé časy
   calculateAverageForTimeData(dayData: { time: string; cyclists: number; temperature: number; rain: number }[], timeData: { [key: string]: { cyclists: number[]; temperature: number[]; rain: number[] } }) {
     for (const time in timeData) {
       if (Object.prototype.hasOwnProperty.call(timeData, time)) {
@@ -208,21 +191,16 @@ export class DataComponent implements OnInit {
     }
   }
 
-  // Pomocná metóda pre výpočet priemeru z poľa čísel
   calculateAverage(values: number[]) {
     const sum = values.reduce((acc, val) => acc + val, 0);
     return sum / values.length;
   }
 
-
   makeAverages(daysOverview: any): { highestDay: string, lowestDay: string } {
     const averages: { [key: string]: { cyclists: number, temperature: number, rain: number } } = {};
 
     daysOverview.forEach((dayData: any) => {
-      console.log("Day in averages:", dayData);
-      
       for (const day in dayData) {
-
         if (!averages.hasOwnProperty(day)) {
           averages[day] = { cyclists: 0, temperature: 0, rain: 0 };
         }
@@ -262,16 +240,12 @@ export class DataComponent implements OnInit {
       if (Object.prototype.hasOwnProperty.call(sensor_data, date)) {
         const recordTimestamp = parseInt(date);
 
-
         if (recordTimestamp >= timeFrom && recordTimestamp <= Date.now()) {
           const recordDate = new Date(recordTimestamp);
-
           const dayOfWeek = this.getDayOfWeekFromUnixTimestamp(recordTimestamp);
-
           if (!numberOfCyclistInDay[dayOfWeek]) {
             numberOfCyclistInDay[dayOfWeek] = 0;
           }
-
           numberOfCyclistInDay[dayOfWeek] += sensor_data[date].cyclists;
           const hour = recordDate.getHours();
           const cyclists = sensor_data[date].cyclists;
@@ -374,24 +348,14 @@ export class DataComponent implements OnInit {
 
     const maxAndMinDays: { highestDay: string; lowestDay: string; } = this.makeAverages(daysOverview);
     const clearData: DataSortedForGraph[] = this.getTopDay(maxAndMinDays);
-
     this.setGraphsValues(clearData);
-
     const weatherDataset = this.setWeatherValues(clearData);
-
-
-
     this.initGraphs(this.datasets, weatherDataset, maxAndMinDays);
   }
 
   initGraphs(cyclistsDataset: any, weatherDataset: WeatherDataSortedForGraph, maxAndMinDays: { highestDay: string; lowestDay: string;}) {
-
     const labels = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'];
 
-    console.log("Cyclist dataset: ", cyclistsDataset);
-    console.log("Weather dataset: ", weatherDataset);
-    
-    
     this.graphs = [
       {
         chartId: "ComparisonGraph3",
@@ -422,7 +386,6 @@ export class DataComponent implements OnInit {
 
     clearData.forEach((record: any) => {
         let weather = this.setWeather(record.data.high);
-
         const weatherDatasetHigh: WeatherDataset = {
             label: "Teplota" + record.location,
             type: 'bar',
@@ -430,9 +393,7 @@ export class DataComponent implements OnInit {
             data: weather.temperature,
             borderWidth: 1
         };
-
         weatherDatasets.high.push(weatherDatasetHigh);
-
         const precipitationDatasetHigh: WeatherDataset = {
             label: "Zrazky" + record.location,
             type: 'bar',
@@ -440,11 +401,10 @@ export class DataComponent implements OnInit {
             backgroundColor: 'rgba(255, 99, 132, 1)',
             borderWidth: 1
         };
-
         weatherDatasets.high.push(precipitationDatasetHigh);
 
-        weather = this.setWeather(record.data.low);
 
+        weather = this.setWeather(record.data.low);
         const weatherDatasetLow: WeatherDataset = {
             label: "Teplota" + record.location,
             type: 'bar',
@@ -452,9 +412,7 @@ export class DataComponent implements OnInit {
             data: weather.temperature,
             borderWidth: 1
         };
-
         weatherDatasets.low.push(weatherDatasetLow);
-
         const precipitationDatasetLow: WeatherDataset = {
             label: "Zrazky" + record.location,
             type: 'bar',
@@ -462,11 +420,10 @@ export class DataComponent implements OnInit {
             backgroundColor: 'rgba(255, 99, 132, 1)',
             borderWidth: 1
         };
-
         weatherDatasets.low.push(precipitationDatasetLow);
 
-        weather = this.setWeather(record.data.average);
 
+        weather = this.setWeather(record.data.average);
         const weatherDatasetAverage: WeatherDataset = {
             label: "Teplota" + record.location,
             type: 'bar',
@@ -474,9 +431,7 @@ export class DataComponent implements OnInit {
             data: weather.temperature,
             borderWidth: 1
         };
-
         weatherDatasets.average.push(weatherDatasetAverage);
-
         const precipitationDatasetAverage: WeatherDataset = {
             label: "Zrazky" + record.location,
             type: 'bar',
@@ -484,13 +439,11 @@ export class DataComponent implements OnInit {
             backgroundColor: 'rgba(255, 99, 132, 1)',
             borderWidth: 1
         };
-
         weatherDatasets.average.push(precipitationDatasetAverage);
     });
 
     return weatherDatasets;
 }
-
 
 
   setWeather(data: any) {
@@ -513,14 +466,12 @@ export class DataComponent implements OnInit {
 
 
   setGraphsValues(data: any) {
-
     let colors = ["red", "green", "blue", "yellow", "purple", "brown", "pink",];
     data.forEach((record: any, index: number) => {
       let counts: number[] = [];
       record.data.high = this.fillMissingTimes(record.data.high);
       record.data.low = this.fillMissingTimes(record.data.low);
       record.data.average = this.fillMissingTimes(record.data.average);
-
       
       record.data.high.forEach((data: any) => {
         counts.push(data.cyclists)
@@ -583,7 +534,6 @@ export class DataComponent implements OnInit {
 
     for (let hour = 8; hour <= 19; hour++) {
       const time = `${hour.toString().padStart(2, '0')}:00`;
-
       if (data[index]?.time === time) {
         filledData.push(data[index]);
         index++;
@@ -596,17 +546,11 @@ export class DataComponent implements OnInit {
   }
 
 
-
   formatTimestampToHour(timestamp: number): string {
-    // Konvertuj sekundy na milisekundy
     const milliseconds = timestamp * 1000;
-    // Vytvor nový Date objekt so zadanými milisekundami
     const date = new Date(milliseconds);
-    // Získaj hodinu z dátumu
     const hours = date.getHours();
-    // Zaokrúhli hodinu na najbližšiu celú hodinu
     const roundedHours = Math.round(hours);
-    // Vytvor reťazec reprezentujúci čas vo formáte HH:mm
     const formattedTime = `${roundedHours < 10 ? '0' : ''}${roundedHours}:00`;
     return formattedTime;
   }
@@ -677,12 +621,8 @@ export class DataComponent implements OnInit {
 
   getSingleStringDateMethod(date: any): number {
     const dateObject = new Date(date);
-    const timestamp = dateObject.getTime(); // Timestamp v milisekundách
-    const timestampInSeconds = Math.floor(timestamp / 1000); // Prevod na sekundy s odstráneným desatinným miestom
+    const timestamp = dateObject.getTime(); 
+    const timestampInSeconds = Math.floor(timestamp / 1000); 
     return timestampInSeconds;
   }
-
-
 }
-
-

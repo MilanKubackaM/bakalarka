@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AddressData } from 'src/app/shared/models/data.model';
 
 @Component({
@@ -12,32 +12,29 @@ import { AddressData } from 'src/app/shared/models/data.model';
 export class MapComponent implements OnInit {
   map!: google.maps.Map;
   @Output() locationChange = new EventEmitter<AddressData>();
-  // @Output() location: EventEmitter<string> = new EventEmitter<string>();
-
 
   constructor() { }
 
   ngOnInit() {
     this.initMap();
   }
-  
+
 
   initMap() {
-    const initialPosition = { lat: 48.148598, lng: 17.107748 }; 
+    const initialPosition = { lat: 48.148598, lng: 17.107748 };
     this.map = new google.maps.Map(document.getElementById('map') as HTMLElement, {
       center: initialPosition,
-      zoom: 10 
+      zoom: 10
     });
 
     google.maps.event.addListener(this.map, 'click', (event) => {
       this.getClickedLocationAddress(event.latLng);
       console.log("Event: ", event);
-      
+
     });
   }
 
   getClickedLocationAddress(latLng: google.maps.LatLng) {
-
     const geocoder = new google.maps.Geocoder();
     geocoder.geocode({ location: latLng }, (results, status) => {
       if (status === 'OK') {
@@ -47,10 +44,10 @@ export class MapComponent implements OnInit {
           let route = '';
           let latitude = latLng.lat();
           let longitude = latLng.lng();
-          let city = ''; // Initialize city to empty string
-  
+          let city = '';
+
           addressComponents.forEach(component => {
-            if (component.types.includes('locality') && city == '') { // Use 'locality' for city
+            if (component.types.includes('locality') && city == '') {
               city = component.long_name;
             }
             if (component.types.includes('street_number') && streetNumber == '') {
@@ -61,10 +58,10 @@ export class MapComponent implements OnInit {
             }
           });
 
-          if((city == '') || (streetNumber == '') || (route == '')){
+          if ((city == '') || (streetNumber == '') || (route == '')) {
             const addressComponents2 = results[0].address_components;
             addressComponents2.forEach(component => {
-              if (component.types.includes('locality') && city == '') { // Use 'locality' for city
+              if (component.types.includes('locality') && city == '') {
                 city = component.long_name;
               }
               if (component.types.includes('street_number') && streetNumber == '') {
@@ -75,16 +72,16 @@ export class MapComponent implements OnInit {
               }
             });
           }
-  
+
           const addressData: AddressData = {
             route: route,
             streetNumber: streetNumber,
             latitude: latitude,
             longitude: longitude,
-            city: city // Add city property
+            city: city
           };
           this.locationChange.emit(addressData);
-  
+
         } else {
           console.error('No results found');
         }
@@ -93,8 +90,4 @@ export class MapComponent implements OnInit {
       }
     });
   }
-  
-
-
-
 }

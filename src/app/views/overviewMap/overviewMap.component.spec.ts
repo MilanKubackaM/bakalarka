@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { OverviewMapComponent } from './overviewMap.component';
 
 describe('OverviewMapComponent', () => {

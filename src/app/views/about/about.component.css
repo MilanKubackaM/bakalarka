@@ -8,7 +8,7 @@
   justify-content: center;
   align-items: center;
   display: grid;
-place-items: center; /* Centrovanie obsahu v smere X aj Y */
+  place-items: center;
 
 }
 
@@ -22,10 +22,8 @@ place-items: center; /* Centrovanie obsahu v smere X aj Y */
 
 .heading {
   font-size: 5em;
-  /* Veľký font */
   font-weight: bold;
   color: white;
-  /* Biela farba */
   text-align: center;
   text-shadow: 8px 8px 10px rgb(1, 26, 28);
 
@@ -35,9 +33,8 @@ place-items: center; /* Centrovanie obsahu v smere X aj Y */
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 568px; /* Posunutie kontajnera nadol */
-position: relative; /* Umožňuje absolútne umiestnenie vnútorných prvkov */
-  /* margin-top: 200px; Pridané */
+  margin-top: 568px;
+  position: relative;
 }
 
 .info-box {
@@ -48,12 +45,11 @@ position: relative; /* Umožňuje absolútne umiestnenie vnútorných prvkov */
 
 .info-box h2 {
   font-size: 2em;
-  /* Menší font ako hlavný header */
   text-shadow: 2px 2px 4px rgb(1, 26, 28)
 }
 
 @media only screen and (max-width: 768px) {
   .container {
-    margin-top: 100px; /* Zníženie posunu na mobilných zariadeniach */
+    margin-top: 100px;
   }
 }

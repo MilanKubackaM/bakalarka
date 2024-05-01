@@ -15,11 +15,11 @@ export class ConfirmationDialogComponent {
 
   confirm(): void {
     this.modalRef.hide();
-    this.confirmationResult.emit(true); // Poslať hodnotu true, keď je potvrdené
+    this.confirmationResult.emit(true); 
   }
 
   cancel(): void {
     this.modalRef.hide();
-    this.confirmationResult.emit(false); // Poslať hodnotu false, keď je zrušené
+    this.confirmationResult.emit(false); 
   }
 }

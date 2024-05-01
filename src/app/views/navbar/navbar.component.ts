@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ScrollService } from '../../shared/services/scroll/scroll.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, Subscribable } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { User } from 'src/app/shared/models/user.model';
-import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-navbar',
@@ -16,12 +13,13 @@ export class NavbarComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private scrollService: ScrollService,
-    private modalService: NgbModal
   ) {
   }
   loggedUser: User | null = null;
   alreadyLoggedIn = false;
   showSettings: boolean = false;
+  createSettings = false;
+
 
 
   ngOnInit() {
@@ -73,9 +71,5 @@ export class NavbarComponent implements OnInit {
   logout(){
     this.authService.signOut();
   }
-
-   createSettings = false;
-
-
 
 }

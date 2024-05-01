@@ -27,6 +27,6 @@
 }
 
 #MyChart{
-  height: 50vh; /* Zmenšenie výšky na 80% výšky obrazovky */
-  width: 50%; /* Zmenšenie šírky na 80% šírky obrazovky */
+  height: 50vh; 
+  width: 50%; 
 }

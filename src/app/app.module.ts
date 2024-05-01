@@ -16,7 +16,6 @@ import { environment } from '../enviroments/environment';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireModule } from '@angular/fire/compat';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ToasterComponent } from './utils/toaster/toaster.component';
 import { APIInterceptorService } from './shared/services/APIInterceptor/apiinterceptor.service';
 import { AddDeviceComponent } from './views/settings/addDevice/addDevice.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -38,12 +37,6 @@ import { ComparisonGraphComponent } from "./views/data/comparison-graph/comparis
 import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
-
-// import { MatGoogleMapsAutocompleteModule } from '@angular-material-extensions/google-maps-autocomplete';
-// import { AgmCoreModule } from '@agm/core';
-
-
-
 @NgModule({
     declarations: [
         AppComponent,
@@ -54,7 +47,6 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
         OverviewMapComponent,
         LoginComponent,
         DataComponent,
-        ToasterComponent,
         AddDeviceComponent
     ],
     providers: [
@@ -70,13 +62,11 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     ],
     bootstrap: [AppComponent],
     imports: [
-        // SettingsComponent,
         BrowserModule,
         AppRoutingModule,
         NgbModule,
         HttpClientModule,
         AngularFireAuthModule,
-        // AngularFireModule,
         AngularFireModule.initializeApp(environment.firebaseConfig),
         ReactiveFormsModule,
         FormsModule,
@@ -91,14 +81,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
         MatFormFieldModule,
         MatAutocompleteModule,
         MatCheckboxModule,
-        FormsModule
-        // AgmCoreModule.forRoot({
-        //   apiKey: 'YOUR_KEY',
-        //   libraries: ['places']
-        // }),
-        // MatGoogleMapsAutocompleteModule,
-        // PlaceAutocompleteCompo
-        ,
+        FormsModule,
         MapComponent,
         LogOutComponent,
         ToastrModule.forRoot(),

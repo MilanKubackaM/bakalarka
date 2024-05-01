@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, SimpleChanges } from '@angular/core';
-import { Chart, ChartConfiguration, registerables } from 'chart.js';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Chart, registerables } from 'chart.js';
 
 @Component({
   selector: 'app-comparison-graph',
@@ -23,26 +23,24 @@ export class ComparisonGraphComponent implements OnInit {
           this.weather.forEach(element => {
             this.chart.data.datasets.push({
               ...element,
-              weather: true, // Pridáme atribút weather pre identifikáciu dát s počasím
+              weather: true,
               yAxisID: 'y2'
             });
           });
         } else {
-          // Odstránime dáta o počasí zo zobrazenia
           this.chart.data.datasets = this.chart.data.datasets.filter((dataset: any) => !dataset.weather);
         }
         this.chart.update();
       }
     }
   }
-  
+
 
   ngOnInit() {
     Chart.register(...registerables);
     const canvasElement = document.getElementById("chartForComparison");
 
     if (canvasElement) {
-
       canvasElement.id = this.chartId;
 
       const data = {

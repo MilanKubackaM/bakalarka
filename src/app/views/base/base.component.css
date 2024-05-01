@@ -1,27 +1,20 @@
-/* base.component.css */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
 
-body, html {
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-  }
-  
-  #container {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  section {
-    width: 100%;
-    min-height: 100vh;
-    box-sizing: border-box;
-  }
-  
-  section:not(#container) {
-    /* padding-top: 50px;  */
-  }
-  
-  /* Tvoje existujúce CSS pravidlá */
+#container {
+  display: flex;
+  flex-direction: column;
+}
+
+section {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
 
 #scroll-down-btn {
   position: fixed;
@@ -30,5 +23,3 @@ body, html {
   font-size: 2em;
   cursor: pointer;
 }
-
-

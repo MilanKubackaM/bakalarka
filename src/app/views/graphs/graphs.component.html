@@ -1,11 +1,8 @@
 <div class="graph">
     <div class="container">
-
         <div class="row">
             <h1 class="heading">Vyvoj poctu cyklistov v danej lokalite</h1>
         </div>
-    
-
         <div class="row justify-content-left">
             <div class="col-md-4">
                 <mat-form-field>
@@ -34,7 +31,8 @@
                 <mat-form-field class="input-group">
                     <mat-label>Interval</mat-label>
                     <div class="flex-container">
-                        <input matInput type="number" class="form-control" [(ngModel)]="interval" name="timeValue" required>
+                        <input matInput type="number" class="form-control" [(ngModel)]="interval" name="timeValue"
+                            required>
                         <mat-select class="custom-select" [(ngModel)]="unit" name="selectedUnit">
                             <mat-option value="seconds">Sekundy</mat-option>
                             <mat-option value="minutes">Minúty</mat-option>
@@ -44,11 +42,9 @@
                     </div>
                 </mat-form-field>
             </div>
-
-
             <div class="form-group">
                 <button name="submit" type="submit" class="btn btn-primary" (click)="createChart()">Vykreslit</button>
-              </div>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -56,5 +52,4 @@
             <canvas id="MyChart">{{ chart }}</canvas>
         </div>
     </div>
-   
 </div>

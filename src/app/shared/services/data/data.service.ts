@@ -3,11 +3,9 @@ import { Observable, catchError, map, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AddressData, Data } from '../../models/data.model';
 import { getDatabase } from "firebase/database";
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore'; // Import AngularFirestore
+import { AngularFirestore } from '@angular/fire/compat/firestore'; 
 import { ToastrService } from 'ngx-toastr';
-import * as firebase from 'firebase/app';
 import 'firebase/firestore';
-
 
 
 @Injectable({
@@ -21,7 +19,6 @@ export class DataService {
     private toastr: ToastrService
   ) { }
 
-  // private apiUrl = 'http://localhost:8086/query?db=sensor_data&q=SELECT * FROM sensor_data';
 
 
   // ---------------------------------------------------------//
@@ -57,8 +54,8 @@ export class DataService {
 
   testApiConnection(APIurl: string): Observable<boolean> {
     return this.http.get<any>(APIurl).pipe(
-      map(() => true), // V prípade úspechu vráti true
-      catchError(() => of(false)) // V prípade chyby vráti false
+      map(() => true), 
+      catchError(() => of(false))
     );
   }
 
@@ -72,9 +69,7 @@ export class DataService {
   }
 
   setDataForUser(uid: string, apiUrl: string, name: string, location: AddressData): Promise<string> {
-
     const userCollectionRef = this.firestore.collection('users').doc(uid).collection('records');
-
     const query = userCollectionRef.ref.where('name', '==', name);
 
     return query.get()
@@ -132,10 +127,8 @@ export class DataService {
     return globalDataDocRef.get().toPromise()
       .then((globalDataSnapshot) => {
         if (globalDataSnapshot?.exists) {
-          // Získajte údaje o počte miest a zariadení z globálnych údajov
           const globalData = globalDataSnapshot.data() as { numberOfCities: number; numberOfDevices: number };
   
-          // Spočítajte počet zariadení zo všetkých miest
           return globalDataDocRef.collection('cities').get().toPromise()
             .then((citiesSnapshot) => {
               let totalDevices = 0;
@@ -147,13 +140,12 @@ export class DataService {
               return { cities: numberOfCitiesInCollection, devices: totalDevices };
             });
         } else {
-          // Ak neexistujú údaje o globálnych údajoch, vráťte nulové hodnoty
           return { cities: 0, devices: 0 };
         }
       })
       .catch((error) => {
         console.error('Chyba pri získavaní globálnych údajov:', error);
-        return { cities: 0, devices: 0 }; // Vráťte nulové hodnoty v prípade chyby
+        return { cities: 0, devices: 0 }; 
       });
   }
 
@@ -164,30 +156,23 @@ export class DataService {
         querySnapshot.forEach(doc => {
           cities.push(doc.id);
         });
-        console.log("Cities: ", cities);
-        
         return cities;
       })
     );
   }
-
   
   getAllUserData(): Observable<any[]> {
     return this.firestore.collectionGroup('records').get().pipe(
       map(querySnapshot => {
         const userDataList: any[] = [];
         querySnapshot.forEach(doc => {
-          // Prečítajte údaje zo záznamu a pridajte ich do pola userDataList
           const data = doc.data();
           userDataList.push(data);
         });
-        // console.log("toto chcem: ", userDataList);
-        
         return userDataList;
       })
     );
   }
-  
   
 
   addToGlobalData(city: string): Promise<void> {
@@ -226,15 +211,6 @@ export class DataService {
     });
   }
 
-  removeFromGlobalData(){
-
-  }
-
-
-
-
-
-
 
   // ---------------------------------------------------------//
   // ------- https://opendata.bratislava.sk/en/page/doc ------//
@@ -246,26 +222,22 @@ export class DataService {
     return this.http.get(`${this.openDataUrl}/category`);
   }
 
-
   // ---------------------------------------------------------//
   // --------------- https://openweathermap.org --------------//
   // ---------------------------------------------------------//
 
-  public lat = "48.14151279961679";
-  public lon = "17.09201244055292";
+  // TODO: presunut api keys do configu
   public apiKeyOpenWeather = "60a1d896c5e7d2442a2bc3e350a66464";
-  private openWeatherUrl = `https://api.openweathermap.org/data/3.0/onecall/timemachine?lat=${this.lat}&lon=${this.lon}&dt={time}&appid={API key}`;
 
   getWeatherHistoryFromOpenWeather(start: number | null, end: number | null, lat: string, lon: string): Observable<any[]> {
     const openWeatherHistory = `https://history.openweathermap.org/data/2.5/history/city?lat=${lat}&lon=${lon}&type=hour&start=${start}&end=${end}&appid=${this.apiKeyOpenWeather}`;
-    // const openWeatherHistory = `https://history.openweathermap.org/data/2.5/history/city?lat=41.85&lon=-87.65&appid=${this.apiKeyOpenWeather}`;
-    
     return this.http.get<any[]>(openWeatherHistory);
   }
   // ---------------------------------------------------------//
   // ----------------- https://emeteo.sk ---------------------//
   // ---------------------------------------------------------//
 
+  // TODO: presunut api keys do configu
   private api_id = "753f0b9fccc49d44";
   private api_key = "3be68d9bc9de4dff61389ec949e504d8";
   private emeteoUrl = `https://emeteo.sk/api/get/current_weather?api_id=${this.api_id}&api_key=${this.api_key}&station_url=vajnory`;
@@ -279,11 +251,8 @@ export class DataService {
     const options = {
       headers: headers,
     };
-
     return this.http.get<any>(this.emeteoUrl, options);
   }
-
-
 
 
   checkCurrentLocation() {
@@ -304,9 +273,5 @@ export class DataService {
       }
     });
   }
-
-
-
-
 
 }

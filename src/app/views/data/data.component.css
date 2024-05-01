@@ -11,15 +11,13 @@
 
 .graph-item {
   flex: 1 0 auto;
-  margin-bottom: 20px; /* Adjust this value to control the spacing between the graphs */
+  margin-bottom: 20px;
 }
 
 .chartContainer {
   display: flex;
   justify-content: center;
 }
-
-
 
 .example-additional-selection {
   opacity: 0.75;

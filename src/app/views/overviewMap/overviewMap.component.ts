@@ -1,7 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { WeatherService } from 'src/app/shared/services/weather/weather.service';
 import { DataService } from 'src/app/shared/services/data/data.service';
-import { AddressData } from 'src/app/shared/models/data.model';
 import { Location } from 'src/app/shared/models/data.model';
 import { forkJoin, map } from 'rxjs';
 
@@ -15,12 +14,10 @@ export class OverviewMapComponent implements OnInit {
   map!: google.maps.Map;
   locations: Location[] = [];
   markers: google.maps.Marker[] = [];
-  infoWindow: google.maps.InfoWindow = new google.maps.InfoWindow(); // Info okno
-
+  infoWindow: google.maps.InfoWindow = new google.maps.InfoWindow();
 
   constructor(
-    private dataService: DataService,
-    private weatherService: WeatherService
+    private dataService: DataService
   ) { }
 
   ngOnInit() {
@@ -35,26 +32,13 @@ export class OverviewMapComponent implements OnInit {
       zoom: 12
     });
 
-    // this.dataService.getAllDevices().subscribe((devices: any) => {
-    //   console.log("Device: ", devices);
-      
-    // })
-    
-    // this.getSensorData();
-
     this.getUserData().then((data: any) => {
-      // console.log(this.locations);
-      
       this.getSensorData(this.locations).then((data: any) => {
-        
-        
         this.createMarkers(data);
       }).catch(error => {
         console.error('Chyba pri získavaní údajov zo senzorov:', error);
-  
-    });
-      
-      
+      });
+
     }).catch(error => {
       console.error('Chyba pri získavaní údajov o uzivateloch:', error);
     });
@@ -63,11 +47,9 @@ export class OverviewMapComponent implements OnInit {
 
   getUserData(): Promise<any[]> {
     return new Promise<any[]>((resolve, reject) => {
-      this.dataService.getAllUserData().subscribe(data => {        
+      this.dataService.getAllUserData().subscribe(data => {
         const locations = this.setLocations(data);
         this.locations = locations;
-        console.log("tuto by to malo byt ok: ", this.locations);
-        
         resolve(data);
       }, error => {
         reject(error);
@@ -77,10 +59,6 @@ export class OverviewMapComponent implements OnInit {
 
 
   getSensorData(locations: Location[]): Promise<any[]> {
-    // const finalDataForToday: any[] = [];
-    console.log("data pve: ", locations);
-
-    
     const observables = locations.map((location: Location) => {
       return this.dataService.getSensorData(location.url).pipe(
         map(data => ({
@@ -91,7 +69,7 @@ export class OverviewMapComponent implements OnInit {
         }))
       );
     });
-  
+
     return new Promise<any[]>((resolve, reject) => {
       forkJoin(observables).subscribe(
         (results: any[]) => {
@@ -103,36 +81,21 @@ export class OverviewMapComponent implements OnInit {
       );
     });
   }
-  
-  // TODO: skontrolovat toto porovnavanie
+
   findDataForToday(data: any) {
     let dataForToday = 0;
     const today = new Date().getDate();
-  
+
     data.forEach((entry: any) => {
       const entryDate = new Date(entry.date).getDate();
-      
       if (entryDate === today) {
         dataForToday = entry.cyclists;
       }
     });
-  
     return dataForToday;
   }
-  
-
-
-
-
- 
-  
-
-
-
 
   createMarkers(locations: Location[]) {
-    console.log(locations);
-    
     const markers: google.maps.Marker[] = [];
     locations.forEach((location: Location) => {
       const lat = parseFloat(location.latitude);
@@ -164,8 +127,6 @@ export class OverviewMapComponent implements OnInit {
   setLocations(data: any) {
     let locations: any = [];
     data.forEach((device: any) => {
-      console.log("toto poriesit: ", device);
-      
       const location = device.location.city + " - " + device.location.route + " " + device.location.streetNumber;
       locations.push({
         deviceName: device.name,
@@ -178,22 +139,18 @@ export class OverviewMapComponent implements OnInit {
     return locations;
   }
 
-
   createContentForInfo(heading: string, body: string, footer: string, cyclists: number) {
-
     const contentString =
       '<div id="content">' +
       '<div id="siteNotice">' +
       "</div>" +
       '<h1 id="firstHeading" class="firstHeading">' + heading + '</h1>' +
       '<div id="bodyContent">' +
-      "<p><b>" + body + cyclists +"</b>" +
+      "<p><b>" + body + cyclists + "</b>" +
       "</div>" +
       "</div>";
 
     return contentString;
-
   }
-
 
 }

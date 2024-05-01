@@ -1,0 +1,52 @@
+<div class="modal-dialog">
+    <div class="modal-content" *ngIf="isLoginVisible" [formGroup]="loginForm">
+        <div class="modal-header">
+            <h5 class="modal-title" id="loginModal">Prihlasenie</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" #closebutton></button>
+        </div>
+        <div class="modal-body">
+            <div class="mb-3">
+              <label for="usernameLog" class="form-label">Email</label>
+              <input type="text" class="form-control" id="usernameLog" placeholder="Email" formControlName="usernameLog">
+            </div>
+            <div class="mb-3">
+              <label for="passwordLog" class="form-label">Heslo</label>
+              <input type="password" class="form-control" id="passwordLog" placeholder="Heslo" formControlName="passwordLog">
+            </div>
+          </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger" (click)="loginWithGoogle()">Prihlásiť sa s Google</button>
+            <button type="button" class="btn btn-primary" (click)="toggleForm()">Registracia</button>
+            <button type="button" class="btn btn-success" (click)="loginWithEmailAndPassword()">Prihlasit</button>
+        </div>
+    </div>
+
+    <div class="modal-content" *ngIf="!isLoginVisible" [formGroup]="registerForm">
+        <div class="modal-header">
+            <h5 class="modal-title" id="loginModal">Registracia</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mb-3">
+              <label for="username" class="form-label">Email</label>
+              <input type="text" class="form-control" id="username" placeholder="Email" formControlName="username" [class.invalid-input]="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Heslo</label>
+              <input type="password" class="form-control" id="password" placeholder="Heslo" formControlName="password" formControlName="password" [class.invalid-input]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+            </div>
+            <div class="mb-3">
+                <label for="confirmPassword" class="form-label">Zopakuj heslo</label>
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Názov služby" formControlName="confirmPassword" [class.invalid-input]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched">
+                <div *ngIf="registerForm.get('confirmPassword')?.hasError('passwordsNotMatch') && registerForm.get('confirmPassword')?.touched" class="text-danger">
+                  Heslá sa nezhodujú.
+                </div>
+              </div>
+              
+          </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="toggleForm()">Naspet</button>
+            <button type="button" class="btn btn-success" (click)="registerWithEmailAndPassword()">Zaregistrovat sa</button>
+        </div>
+    </div>
+</div>

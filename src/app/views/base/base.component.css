@@ -1,0 +1,34 @@
+/* base.component.css */
+
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  
+  #container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  section {
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+  
+  section:not(#container) {
+    /* padding-top: 50px;  */
+  }
+  
+  /* Tvoje existujúce CSS pravidlá */
+
+#scroll-down-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  font-size: 2em;
+  cursor: pointer;
+}
+
+

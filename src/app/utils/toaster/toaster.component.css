@@ -1,0 +1,10 @@
+.toast {
+    position: fixed;
+    top:60px;
+    right: 20px;
+}
+
+.toaster-body-ico {
+    width: 56px;
+    height: 56px;
+}

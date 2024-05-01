@@ -1,0 +1,59 @@
+.about {
+  background-image: url('../../../assets/images/top1.jpg');
+  background-size: cover;
+  height: 100vh;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  display: grid;
+place-items: center; /* Centrovanie obsahu v smere X aj Y */
+
+}
+
+.header {
+  margin-bottom: 30px;
+  position: absolute;
+  top: 350px;
+  left: 0;
+  width: 100%;
+}
+
+.heading {
+  font-size: 5em;
+  /* Veľký font */
+  font-weight: bold;
+  color: white;
+  /* Biela farba */
+  text-align: center;
+  text-shadow: 8px 8px 10px rgb(1, 26, 28);
+
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 568px; /* Posunutie kontajnera nadol */
+position: relative; /* Umožňuje absolútne umiestnenie vnútorných prvkov */
+  /* margin-top: 200px; Pridané */
+}
+
+.info-box {
+  text-align: center;
+  color: whitesmoke;
+  margin: 20px;
+}
+
+.info-box h2 {
+  font-size: 2em;
+  /* Menší font ako hlavný header */
+  text-shadow: 2px 2px 4px rgb(1, 26, 28)
+}
+
+@media only screen and (max-width: 768px) {
+  .container {
+    margin-top: 100px; /* Zníženie posunu na mobilných zariadeniach */
+  }
+}

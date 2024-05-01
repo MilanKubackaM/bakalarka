@@ -1,0 +1,38 @@
+.navbar {
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  opacity: 0.7;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: #000000;
+  font-family: "DM Serif Display";
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+  cursor: pointer;
+  background: rgba(0, 255, 0, 0.2);
+}
+
+.logo {
+  width: 120px;
+}
+
+.modal-container {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.modal-container.ng-tns-c0-0 {
+  opacity: 0;
+}
+
+.hidden {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.dropdown-item {
+  cursor: pointer;
+}

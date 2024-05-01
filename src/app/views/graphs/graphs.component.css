@@ -1,0 +1,32 @@
+.graph {
+  background-image: url('../../../assets/images/grahp1.jpg');
+  background-size: cover;
+  height: 100vh;
+  color: #fff;
+  z-index: -1;
+}
+
+.container {
+  font-family: Arial, sans-serif;
+  color: black;
+  font-size: large;
+  padding: 1em 5em 0em 5em;
+}
+
+.date-input-container {
+  display: flex;
+}
+
+.date-input {
+  margin-right: 10px; 
+  width: 150px; 
+}
+
+.input-group .flex-container {
+  display: flex;
+}
+
+#MyChart{
+  height: 50vh; /* Zmenšenie výšky na 80% výšky obrazovky */
+  width: 50%; /* Zmenšenie šírky na 80% šírky obrazovky */
+}

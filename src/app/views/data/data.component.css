@@ -1,0 +1,31 @@
+.data {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.graph-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.graph-item {
+  flex: 1 0 auto;
+  margin-bottom: 20px; /* Adjust this value to control the spacing between the graphs */
+}
+
+.chartContainer {
+  display: flex;
+  justify-content: center;
+}
+
+
+
+.example-additional-selection {
+  opacity: 0.75;
+  font-size: 0.75em;
+}
+
+.container{
+  padding: 1em 5em 0em 5em;
+}

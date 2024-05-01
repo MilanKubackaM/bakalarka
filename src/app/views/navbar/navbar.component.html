@@ -1,0 +1,77 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="navbar-opacity d-flex justify-content-between">
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item mr-3">
+          <a class="nav-link" (click)="toAbout()">
+            <img class="logo" src="../../assets/images/logo.png">
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" (click)="toGraphs()" style="font-size: 1.2em;">Grafy</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="toData()" style="font-size: 1.2em;">Data</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="tooverviewMap()" style="font-size: 1.2em;">Mapa</a>
+        </li>
+        <li class="nav-item" *ngIf="!loggedUser">
+          <a class="nav-link" style="font-size: 1.2em;" data-bs-toggle="modal"
+            data-bs-target="#loginModal">Prihlásenie</a>
+        </li>
+        <li class="nav-item" *ngIf="loggedUser">
+          <span class="nav-link" style="font-size: 1.2em;">{{ loggedUser.displayName }}</span>
+        </li>
+        <li class="nav-item dropdown" *ngIf="loggedUser">
+          <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Nastavenia
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <li>
+                <a class="dropdown-item" data-bs-toggle="modal"
+                  data-bs-target="#addDeviceModal"><strong>Pridat scitac</strong></a>
+              </li>
+              <li>
+                <a class="dropdown-item" data-bs-toggle="modal"
+                  data-bs-target="#myDevicesModal"><strong>Moje scitace</strong></a>
+              </li>
+              <li>
+                <a class="dropdown-item bg-danger text-white rounded" 
+                (click)="logout()">Odhlasit</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div [class.hidden]="loggedUser">
+  <app-login class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel"
+    aria-hidden="true"></app-login>
+</div>
+
+<div [class.hidden]="!loggedUser">
+  <div class="modal fade" id="addDeviceModal" tabindex="-1" aria-labelledby="addDeviceModal" aria-hidden="true">
+    <app-addDevice></app-addDevice>
+  </div>
+</div>
+
+<div [class.hidden]="!loggedUser">
+  <div class="modal fade" id="myDevicesModal" tabindex="-1" aria-labelledby="myDevicesModal" aria-hidden="true">
+    <app-my-devices></app-my-devices>
+  </div>
+</div>
+
+<div [class.hidden]="!loggedUser">
+  <div id="logOutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <app-log-out></app-log-out>
+  </div>
+</div>

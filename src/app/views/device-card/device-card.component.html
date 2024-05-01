@@ -1,0 +1,14 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{ name }}</mat-card-title>
+    <mat-card-subtitle>{{ address }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-divider [vertical]="true"></mat-divider>
+  <mat-card-content>
+    {{ api }}
+  </mat-card-content>
+  <mat-card-actions class="actions" align="end">
+    <button mat-button color="primary">Zmenit udaje</button>
+    <button mat-button color="warn">Vymazat</button>
+  </mat-card-actions>
+</mat-card>

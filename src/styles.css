@@ -1,0 +1,12 @@
+@import 'ngx-toastr/toastr';
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.heading {
+    font-size: 3em !important;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgb(1, 26, 28);
+
+  }

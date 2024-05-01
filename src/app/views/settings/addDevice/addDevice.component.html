@@ -1,0 +1,63 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title" id="loginModal">Pridanie scitacu</h2>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" #closebutton></button>
+    </div>
+    <div class="modal-body">
+      <p>Pre pridanie vlastného sčítania si prečítaj presné inštrukcie TU</p>
+
+      <form [formGroup]="settingsForm">
+        <div class="mb-3">
+          <label class="form-label">Názov</label>
+          <input type="text" class="form-control" formControlName="counterName"
+            placeholder="Zadaj názov pre tvoj sčítač">
+          <div *ngIf="settingsForm.get('counterName')?.invalid && settingsForm.get('counterName')?.touched"
+            class="text-danger">Názov je povinný</div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">API</label>
+          <input type="text" class="form-control" formControlName="apiUrl" placeholder="Zadaj svoju API url">
+          <div *ngIf="settingsForm.get('apiUrl')?.invalid && settingsForm.get('apiUrl')?.touched" class="text-danger">
+            API je povinné</div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Adresa</label>
+          <input #inputField id="inputField" type="text" class="form-control" [(ngModel)]="location"
+            formControlName="location" placeholder="Zadaj miesto, kde sa sčítač nachádza">
+          <button type="button" class="btn btn-success" (click)="toggleMap()">Vyhladaj na mape</button>
+          <div *ngIf="settingsForm.get('location')?.invalid && settingsForm.get('location')?.touched"
+            class="text-danger">Adresa je povinná</div>
+        </div>
+
+        <app-map *ngIf="showMap" (locationChange)="onLocationChange($event)"></app-map>
+
+        <div class="modal-footer">
+          <button type="testApi" (click)="testApiConnection()" [disabled]="apiTestPassed"
+            [ngClass]="{'btn': true, 'btn-dark': !apiTestPassed, 'btn-success': apiTestPassed}">
+            <span *ngIf="!loadingApiTest && !apiTestPassed">Otestovat API</span>
+            <span *ngIf="loadingApiTest">
+              <i class="fa fa-spinner fa-spin"></i>
+            </span>
+            <span *ngIf="apiTestPassed" >
+              <i class="fa fa-arrow-circle-right text-white"></i>
+            </span>
+          </button>
+
+          <button (click)="onSubmit()" type="submit" class="btn btn-primary" [disabled]="!settingsForm.valid || !apiTestPassed">
+            <span *ngIf="!savingData">Pridať</span>
+            <span *ngIf="savingData">
+              <i class="fa fa-spinner fa-spin"></i>
+            </span>
+          </button>
+        </div>
+
+      </form>
+
+
+    </div>
+
+  </div>
+</div>

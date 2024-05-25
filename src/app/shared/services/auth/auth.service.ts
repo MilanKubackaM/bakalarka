@@ -9,7 +9,7 @@ import { User } from '../../models/user.model';
   providedIn: 'root'
 })
 export class AuthService {
-  loggedInSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private loggedInSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private auth: AngularFireAuth) {
     this.auth.authState.subscribe((user) => {
@@ -20,7 +20,7 @@ export class AuthService {
   }
 
   private userSubject = new BehaviorSubject<User | null>(null);
-  user$: Observable<User | null> = this.userSubject.asObservable().pipe(filter(user => user !== null));
+  public user$: Observable<User | null> = this.userSubject.asObservable().pipe(filter(user => user !== null));
   private user: User | null = null; 
 
   getCurrentUser(): User | null {

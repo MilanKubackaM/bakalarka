@@ -27,6 +27,15 @@
 }
 
 #MyChart{
-  height: 50vh; 
-  width: 50%; 
+  height: 65vh !important;
+}
+
+.chart-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+}
+
+.heading{
+  padding: 0.5em;
 }

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { WeatherService } from 'src/app/shared/services/weather/weather.service';
 import { DataService } from 'src/app/shared/services/data/data.service';
 import { Location } from 'src/app/shared/models/data.model';
 import { forkJoin, map } from 'rxjs';
@@ -144,9 +143,9 @@ export class OverviewMapComponent implements OnInit {
       '<div id="content">' +
       '<div id="siteNotice">' +
       "</div>" +
-      '<h1 id="firstHeading" class="firstHeading">' + heading + '</h1>' +
+      '<h2 id="firstHeading" class="firstHeading">' + heading + '</h2>' +
       '<div id="bodyContent">' +
-      "<p><b>" + body + cyclists + "</b>" +
+      "<h1>" + body + cyclists + "</h1>" +
       "</div>" +
       "</div>";
 

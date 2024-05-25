@@ -1,7 +1,7 @@
 <div class="modal-dialog">
   <div class="modal-content">
     <div class="modal-header">
-      <h2 class="modal-title" id="loginModal">Moje scitace</h2>
+      <h2 class="modal-title" id="loginModal">Moje zariadenia</h2>
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" #closebutton></button>
     </div>
     <div class="modal-body">
@@ -14,15 +14,15 @@
         <mat-card>
           <mat-card-header>
             <mat-card-title>{{ device.name }}</mat-card-title>
-            <mat-card-subtitle>{{ device.location }}</mat-card-subtitle>
+            <mat-card-subtitle>{{ device.location.city + ' '+ device.location.route + device.location.streetNumber }}</mat-card-subtitle>
           </mat-card-header>
           <mat-divider [vertical]="true"></mat-divider>
           <mat-card-content>
             {{ device.apiUrl }}
           </mat-card-content>
           <mat-card-actions class="actions" align="end">
-            <button mat-button color="primary" (click)="editDevice(device.name)">Zmenit udaje</button>
-            <button mat-button color="warn" (click)="deleteDevice(device.name)">Vymazat</button>
+            <button mat-button color="primary" (click)="editDevice(device.name)">Zmeniť údaje</button>
+            <button mat-button color="warn" (click)="deleteDevice(device.name)">Vymazať</button>
           </mat-card-actions>
         </mat-card>
       </div>

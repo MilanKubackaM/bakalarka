@@ -10,7 +10,11 @@ export interface Data {
 
 export interface DeviceData {
     name: string,
-    location: string,
+    location: {
+        city: string,
+        route: string,
+        streetNumber: string
+    },
     apiUrl: string
 }
 
@@ -63,7 +67,7 @@ export interface SensorData {
 }
 
 export interface Location {
-    location: string, 
+    location: string,
     longitude: string,
     latitude: string,
     url: string,

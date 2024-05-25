@@ -75,7 +75,7 @@ export class DataService {
     return query.get()
       .then((querySnapshot) => {
         if (!querySnapshot.empty) {
-          this.toastr.error('Záznam s týmto názvom už existuje. Zadajte prosím iný názov', "Neplatne udaje");
+          this.toastr.error('Zariadenie s týmto názvom už existuje. Zadajte prosím iný názov', "Neplatné údaje");
           return Promise.resolve('nameDuplicated-error');
         } else {
           return userCollectionRef.add({
@@ -84,7 +84,7 @@ export class DataService {
             location
           })
             .then(() => {
-              this.toastr.success('Pridanie scitaca bolo úspešné!', 'Pripojene');
+              this.toastr.success('Pridanie zariadenia bolo úspešné!', 'Pripojené');
               return Promise.resolve('');
             })
             .catch((error) => {
@@ -226,33 +226,33 @@ export class DataService {
   // --------------- https://openweathermap.org --------------//
   // ---------------------------------------------------------//
 
-  // TODO: presunut api keys do configu
-  public apiKeyOpenWeather = "60a1d896c5e7d2442a2bc3e350a66464";
+  // // TODO: presunut api keys do configu
+  // public apiKeyOpenWeather = "60a1d896c5e7d2442a2bc3e350a66464";
 
-  getWeatherHistoryFromOpenWeather(start: number | null, end: number | null, lat: string, lon: string): Observable<any[]> {
-    const openWeatherHistory = `https://history.openweathermap.org/data/2.5/history/city?lat=${lat}&lon=${lon}&type=hour&start=${start}&end=${end}&appid=${this.apiKeyOpenWeather}`;
-    return this.http.get<any[]>(openWeatherHistory);
-  }
+  // getWeatherHistoryFromOpenWeather(start: number | null, end: number | null, lat: string, lon: string): Observable<any[]> {
+  //   const openWeatherHistory = `https://history.openweathermap.org/data/2.5/history/city?lat=${lat}&lon=${lon}&type=hour&start=${start}&end=${end}&appid=${this.apiKeyOpenWeather}`;
+  //   return this.http.get<any[]>(openWeatherHistory);
+  // }
   // ---------------------------------------------------------//
   // ----------------- https://emeteo.sk ---------------------//
   // ---------------------------------------------------------//
 
-  // TODO: presunut api keys do configu
-  private api_id = "753f0b9fccc49d44";
-  private api_key = "3be68d9bc9de4dff61389ec949e504d8";
-  private emeteoUrl = `https://emeteo.sk/api/get/current_weather?api_id=${this.api_id}&api_key=${this.api_key}&station_url=vajnory`;
+  // // TODO: presunut api keys do configu
+  // private api_id = "753f0b9fccc49d44";
+  // private api_key = "3be68d9bc9de4dff61389ec949e504d8";
+  // private emeteoUrl = `https://emeteo.sk/api/get/current_weather?api_id=${this.api_id}&api_key=${this.api_key}&station_url=vajnory`;
 
-  getEmeteoData(stationUrl: string): Observable<any> {
-    const headers = new HttpHeaders()
-      .set('api_id', this.api_id)
-      .set('api_key', this.api_key)
-      .set('station_url', stationUrl);
+  // getEmeteoData(stationUrl: string): Observable<any> {
+  //   const headers = new HttpHeaders()
+  //     .set('api_id', this.api_id)
+  //     .set('api_key', this.api_key)
+  //     .set('station_url', stationUrl);
 
-    const options = {
-      headers: headers,
-    };
-    return this.http.get<any>(this.emeteoUrl, options);
-  }
+  //   const options = {
+  //     headers: headers,
+  //   };
+  //   return this.http.get<any>(this.emeteoUrl, options);
+  // }
 
 
   checkCurrentLocation() {

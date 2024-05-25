@@ -1,7 +1,7 @@
 <div class="modal-dialog">
     <div class="modal-content" *ngIf="isLoginVisible" [formGroup]="loginForm">
         <div class="modal-header">
-            <h5 class="modal-title" id="loginModal">Prihlasenie</h5>
+            <h1 id="loginModal">Prihlásenie</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" #closebutton></button>
         </div>
         <div class="modal-body">
@@ -16,8 +16,8 @@
           </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-danger" (click)="loginWithGoogle()">Prihlásiť sa s Google</button>
-            <button type="button" class="btn btn-primary" (click)="toggleForm()">Registracia</button>
-            <button type="button" class="btn btn-success" (click)="loginWithEmailAndPassword()">Prihlasit</button>
+            <button type="button" class="btn btn-primary" (click)="toggleForm()">Registrácia</button>
+            <button type="button" class="btn btn-success" (click)="loginWithEmailAndPassword()">Prihlásiť</button>
         </div>
     </div>
 

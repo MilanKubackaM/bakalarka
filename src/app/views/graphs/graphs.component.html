@@ -1,7 +1,7 @@
 <div class="graph">
     <div class="container">
         <div class="row">
-            <h1 class="heading">Vyvoj poctu cyklistov v danej lokalite</h1>
+            <h1 class="heading">Vývoj počtu cyklistov v danej lokalite</h1>
         </div>
         <div class="row justify-content-left">
             <div class="col-md-4">
@@ -16,7 +16,7 @@
             </div>
             <div class="col-md-4">
                 <mat-form-field>
-                    <mat-label>Enter a date range</mat-label>
+                    <mat-label>Zadajte rozsah dátumov</mat-label>
                     <mat-date-range-input [rangePicker]="picker">
                         <input matInput [(ngModel)]="startDate" matStartDate placeholder="Start date" required>
                         <input matInput [(ngModel)]="endDate" matEndDate placeholder="End date" required>
@@ -43,13 +43,11 @@
                 </mat-form-field>
             </div>
             <div class="form-group">
-                <button name="submit" type="submit" class="btn btn-primary" (click)="createChart()">Vykreslit</button>
+                <button name="submit" type="submit" class="btn btn-primary" (click)="createChart()">Vykresliť</button>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm">
-            <canvas id="MyChart">{{ chart }}</canvas>
-        </div>
+    <div class="chart-container">
+        <canvas id="MyChart">{{ chart }}</canvas>
     </div>
 </div>

@@ -146,7 +146,7 @@ export class AddDeviceComponent implements OnInit {
               this.toastr.success('Pripojenie k API bolo úspešné!', 'Pripojene'); 
               this.apiTestPassed = true;
             } else {
-              this.toastr.error('Nepodarilo sa nadviazat spojenie, skontrolujte zadane API!', 'Chybne udaje'); 
+              this.toastr.error('Nepodarilo sa nadviazať spojenie, skontrolujte zadané API!', 'Chybné údaje'); 
             }
             this.loadingApiTest = false;
             clearInterval(this.interval);

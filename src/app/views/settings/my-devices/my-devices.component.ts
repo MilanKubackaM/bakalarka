@@ -51,13 +51,14 @@ export class MyDevicesComponent {
     }, 0);
   }
 
+
+  //! TODO: toto tu je troska odveci treba precistit pripadne odmazat
   showData() {
     const cardContainer = document.getElementById('card-container'); 
     this.data.forEach((data: DeviceData) => {
       const deviceCard = document.createElement('app-device-card');
-
       deviceCard.setAttribute('name', data.name); 
-      deviceCard.setAttribute('address', data.location);
+      deviceCard.setAttribute('address', data.location.city + ' '+ data.location.route + data.location.streetNumber);
       deviceCard.setAttribute('apiUrl', data.apiUrl);
       cardContainer?.appendChild(deviceCard);
     });
@@ -76,5 +77,8 @@ export class MyDevicesComponent {
     });
   }
 
+
+  //! TODO: Doplnit!
+  editDevice(name: String){}
 
 }

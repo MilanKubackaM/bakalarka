@@ -66,7 +66,7 @@ export class ComparisonGraphComponent implements OnInit {
               display: true,
               title: {
                 display: true,
-                text: 'Cas'
+                text: 'Čas'
               }
             },
             y: {
@@ -74,7 +74,7 @@ export class ComparisonGraphComponent implements OnInit {
               position: 'left',
               title: {
                 display: true,
-                text: 'Pocet Cyklistov'
+                text: 'Počet Cyklistov'
               },
               suggestedMin: -10,
               suggestedMax: 110
@@ -84,7 +84,7 @@ export class ComparisonGraphComponent implements OnInit {
               position: 'right',
               title: {
                 display: true,
-                text: 'Pocasie'
+                text: 'Počasie'
               },
               suggestedMax: 30
             },

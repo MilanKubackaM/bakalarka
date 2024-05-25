@@ -1,11 +1,11 @@
 <div class="modal-dialog">
   <div class="modal-content">
     <div class="modal-header">
-      <h2 class="modal-title" id="loginModal">Pridanie scitacu</h2>
+      <h2 class="modal-title" id="loginModal">Pridanie zariadenia</h2>
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" #closebutton></button>
     </div>
     <div class="modal-body">
-      <p>Pre pridanie vlastného sčítania si prečítaj presné inštrukcie TU</p>
+      <p>Pre pridanie vlastného zariadenia si prečítaj presné inštrukcie TU</p>
 
       <form [formGroup]="settingsForm">
         <div class="mb-3">
@@ -27,7 +27,7 @@
           <label class="form-label">Adresa</label>
           <input #inputField id="inputField" type="text" class="form-control" [(ngModel)]="location"
             formControlName="location" placeholder="Zadaj miesto, kde sa sčítač nachádza">
-          <button type="button" class="btn btn-success" (click)="toggleMap()">Vyhladaj na mape</button>
+          <button type="button" class="btn btn-success mt-3" (click)="toggleMap()">Vyhľadaj na mape</button>
           <div *ngIf="settingsForm.get('location')?.invalid && settingsForm.get('location')?.touched"
             class="text-danger">Adresa je povinná</div>
         </div>
@@ -37,7 +37,7 @@
         <div class="modal-footer">
           <button type="testApi" (click)="testApiConnection()" [disabled]="apiTestPassed"
             [ngClass]="{'btn': true, 'btn-dark': !apiTestPassed, 'btn-success': apiTestPassed}">
-            <span *ngIf="!loadingApiTest && !apiTestPassed">Otestovat API</span>
+            <span *ngIf="!loadingApiTest && !apiTestPassed">Otestovať API</span>
             <span *ngIf="loadingApiTest">
               <i class="fa fa-spinner fa-spin"></i>
             </span>

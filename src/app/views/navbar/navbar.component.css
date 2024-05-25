@@ -1,6 +1,6 @@
 .navbar {
   position: fixed;
-  width: 100%;
+  min-width: 100%;
   z-index: 1000;
   opacity: 0.7;
 }
@@ -19,12 +19,21 @@
   width: 120px;
 }
 
+.core-menu {
+  align-items: center;
+  display: flex;
+}
+
 .modal-container {
   transition: opacity 0.3s ease-in-out;
 }
 
 .modal-container.ng-tns-c0-0 {
   opacity: 0;
+}
+
+.navbar-opacity {
+  width: 100%;
 }
 
 .hidden {
@@ -35,4 +44,11 @@
 
 .dropdown-item {
   cursor: pointer;
+}
+
+.user {
+  font-size: 1.4em;
+  list-style-type: none;
+  padding: 0.7rem 0.8rem 0 0;
+  font-weight: bold;
 }

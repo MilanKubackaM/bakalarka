@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>Upraviť zariadenie</h2>
+<form [formGroup]="form" (ngSubmit)="save()">
+  <mat-dialog-content>
+    <mat-form-field>
+      <mat-label>Názov zariadenia</mat-label>
+      <input matInput formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>API URL</mat-label>
+      <input matInput formControlName="apiUrl">
+    </mat-form-field>
+
+    <div formGroupName="location">
+      <mat-form-field>
+        <mat-label>Mesto</mat-label>
+        <input matInput formControlName="city">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Ulica</mat-label>
+        <input matInput formControlName="route">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Číslo</mat-label>
+        <input matInput formControlName="streetNumber">
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button type="button" (click)="close()">Zavrieť</button>
+    <button mat-button color="primary" type="submit">Uložiť</button>
+  </mat-dialog-actions>
+</form>

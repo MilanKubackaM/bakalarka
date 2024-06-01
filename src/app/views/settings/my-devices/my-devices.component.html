@@ -10,22 +10,54 @@
         <p>Aktuálne nemáš žiadne vlastné scitace. Pre pridanie zariadenia choď do <strong>'Nastavenia'</strong> -> <strong>'Pridať scitac'</strong>.</p>
       </div>
       
-      <div *ngFor="let device of data">
+      @for(device of data; track device){
         <mat-card>
           <mat-card-header>
-            <mat-card-title>{{ device.name }}</mat-card-title>
-            <mat-card-subtitle>{{ device.location.city + ' '+ device.location.route + device.location.streetNumber }}</mat-card-subtitle>
+            <mat-card-title>
+              <ng-container *ngIf="!editingDevice[device.name]; else editMode">
+                {{ device.name }}
+              </ng-container>
+              <ng-template #editMode>
+                <input [(ngModel)]="device.name">
+              </ng-template>
+            </mat-card-title>
+            <mat-card-subtitle>
+              <ng-container *ngIf="!editingDevice[device.name]; else editModeSub">
+                {{ device.location.city + ' ' + device.location.route + device.location.streetNumber }}
+              </ng-container>
+              <ng-template #editModeSub>
+                <input [(ngModel)]="device.location.city" placeholder="Mesto">
+                <input [(ngModel)]="device.location.route" placeholder="Ulica">
+                <input [(ngModel)]="device.location.streetNumber" placeholder="Číslo">
+              </ng-template>
+            </mat-card-subtitle>
+            <div class="battery-status" style="position: absolute; right: 16px; top: 16px;">
+              <mat-icon>battery_full</mat-icon>
+              {{ device.battery }}%
+            </div>
           </mat-card-header>
           <mat-divider [vertical]="true"></mat-divider>
           <mat-card-content>
-            {{ device.apiUrl }}
+            <ng-container *ngIf="!editingDevice[device.name]; else editModeApiUrl">
+              {{ device.apiUrl }}
+            </ng-container>
+            <ng-template #editModeApiUrl>
+              <input [(ngModel)]="device.apiUrl">
+            </ng-template>
           </mat-card-content>
           <mat-card-actions class="actions" align="end">
-            <button mat-button color="primary" (click)="editDevice(device.name)">Zmeniť údaje</button>
+            <ng-container *ngIf="!editingDevice[device.name]; else saveButton">
+              <button mat-button color="primary" (click)="editDevice(device)">Zmeniť údaje</button>
             <button mat-button color="warn" (click)="deleteDevice(device.name)">Vymazať</button>
+
+            </ng-container>
+            <ng-template #saveButton>
+              <button mat-button color="primary" (click)="saveDevice(device)">Uložiť</button>
+              <button mat-button color="gray" (click)="cancelEdit(device)">Zrušiť</button>
+            </ng-template>
           </mat-card-actions>
         </mat-card>
-      </div>
+      }
     </div>
   </div>
 </div>

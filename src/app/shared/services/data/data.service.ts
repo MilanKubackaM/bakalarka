@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AddressData, Data } from '../../models/data.model';
+import { AddressData, Data, DeviceData } from '../../models/data.model';
 import { getDatabase } from "firebase/database";
 import { AngularFirestore } from '@angular/fire/compat/firestore'; 
 import { ToastrService } from 'ngx-toastr';
@@ -28,7 +28,11 @@ export class DataService {
   getSensorData(url: string): Observable<Data[]> {
     const apiURL = `http://${url}/query?db=sensor_data&q=SELECT * FROM sensor_data`;
     return this.http.get<any>(apiURL).pipe(
-      map(response => this.mapToDataModel(response))
+      map(response => this.mapToDataModel(response)),
+      catchError(error => {
+        console.error('Error fetching sensor data', error);
+        return of([]);
+      })
     );
   }
 
@@ -50,6 +54,18 @@ export class DataService {
       data.push(dataItem);
     });
     return data;
+  }
+
+  getBatteryLife(url: string): Observable<number | null> {
+    return this.getSensorData(url).pipe(
+      map(data => {
+        if (data.length === 0) {
+          return null;
+        }
+        const latestData = data[data.length - 1];
+        return latestData.battery;
+      })
+    );
   }
 
   testApiConnection(APIurl: string): Observable<boolean> {
@@ -119,6 +135,29 @@ export class DataService {
       }
     }).catch((error) => {
       this.toastr.error('Chyba pri vymazávaní zariadenia!', error);
+    });
+  }
+
+  updateDevice(uid: string, deviceName: string, updatedData: Partial<DeviceData>): Promise<void> {
+    const userCollectionRef = this.firestore.collection('users').doc(uid).collection('records');
+    const query = userCollectionRef.ref.where('name', '==', deviceName);
+
+    return query.get().then(querySnapshot => {
+      if (!querySnapshot.empty) {
+        const docRef = querySnapshot.docs[0].ref;
+        return docRef.update(updatedData).then(() => {
+          this.toastr.success('Údaje zariadenia boli úspešne aktualizované!', 'Úspech');
+        }).catch(error => {
+          this.toastr.error('Chyba pri aktualizovaní údajov zariadenia!', error);
+          throw error;
+        });
+      } else {
+        this.toastr.error('Zariadenie nebolo nájdené!', 'Chyba');
+        return Promise.reject('Device not found');
+      }
+    }).catch(error => {
+      this.toastr.error('Chyba pri získavaní údajov zariadenia!', error);
+      throw error;
     });
   }
 

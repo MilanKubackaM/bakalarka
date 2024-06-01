@@ -55,35 +55,15 @@ export class AddDeviceComponent implements OnInit {
     });
   }
 
-  ngAfterViewInit() {
-    this.initializeAutocomplete();
-  }
-
   toggleMap() {
     this.showMap = !this.showMap;
   }
 
   onLocationChange(event: any) {
+    const formattedAddress = `${event.route} ${event.streetNumber}, ${event.city}`;
+    this.settingsForm.get('location')?.setValue(formattedAddress);
     this.location = event;
-  }
-
-  //! TODO: toto je cele dojebane nefunguje to ako ma, autocomplete sa zobrazuje pod modalom, opravit!!!
-  initializeAutocomplete() {
-    this.autocomplete = new google.maps.places.Autocomplete(
-      this.inputField.nativeElement
-    );
-
-    this.autocomplete.addListener('place_changed', () => {
-      this.ngZone.run(() => {
-        const place = this.autocomplete?.getPlace();
-        const result: any = {
-          address: this.inputField.nativeElement.value,
-          name: place?.name,
-          location: place?.geometry?.location,
-          iconUrl: place?.icon,
-        };
-      });
-    });
+    console.log(this.location);
   }
 
   displayFn(option: Option): string {

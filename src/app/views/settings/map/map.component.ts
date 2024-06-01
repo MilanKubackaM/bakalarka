@@ -11,6 +11,7 @@ import { AddressData } from 'src/app/shared/models/data.model';
 
 export class MapComponent implements OnInit {
   map!: google.maps.Map;
+  marker!: google.maps.Marker;
   @Output() locationChange = new EventEmitter<AddressData>();
 
   constructor() { }
@@ -28,9 +29,8 @@ export class MapComponent implements OnInit {
     });
 
     google.maps.event.addListener(this.map, 'click', (event) => {
+      this.placeMarker(event.latLng);
       this.getClickedLocationAddress(event.latLng);
-      console.log("Event: ", event);
-
     });
   }
 
@@ -88,6 +88,16 @@ export class MapComponent implements OnInit {
       } else {
         console.error('Geocoder failed due to: ' + status);
       }
+    });
+  }
+
+  placeMarker(location: google.maps.LatLng) {
+    if (this.marker) {
+      this.marker.setMap(null); // Odstrániť predchádzajúci marker
+    }
+    this.marker = new google.maps.Marker({
+      position: location,
+      map: this.map
     });
   }
 }

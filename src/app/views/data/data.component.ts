@@ -74,7 +74,7 @@ export class DataComponent implements OnInit {
 
   // ------------------------------------------------------- //
   // ------------------------------------------------------- //
-  // ---------  S E N S O R   H A N D L I N G  ------------- //
+  // -----  S E N S O R   D A T A   H A N D L I N G  ------- //
   // ------------------------------------------------------- //
   // ------------------------------------------------------- //
 
@@ -132,6 +132,8 @@ export class DataComponent implements OnInit {
         if (Object.prototype.hasOwnProperty.call(sensorData, timestamp)) {
           const recordTimestamp = parseInt(timestamp);
           const dayOfWeek = this.getDayOfWeekFromUnixTimestamp(recordTimestamp);
+          console.log("den v tyzdni: ", dayOfWeek);
+          
           const time = this.formatTimestampToHour(recordTimestamp);
           const cyclists = sensorData[timestamp].cyclists;
           const temperature = sensorData[timestamp].temperature;
@@ -147,9 +149,8 @@ export class DataComponent implements OnInit {
                 lowestDayData.push({ time, cyclists, temperature, rain });
                 this.addToTimeData(lowDataByTime, time, cyclists, temperature, rain);
                 break;
-              default:
-                this.addToTimeData(averageDataByTime, time, cyclists, temperature, rain);
             }
+            this.addToTimeData(averageDataByTime, time, cyclists, temperature, rain);
           }
         }
       }
@@ -157,6 +158,12 @@ export class DataComponent implements OnInit {
       this.calculateAverageForTimeData(highestDayData, highDataByTime);
       this.calculateAverageForTimeData(lowestDayData, lowDataByTime);
       this.calculateAverageForTimeData(averageDayData, averageDataByTime);
+
+      console.log("Highestday: ", highestDayData);
+      console.log("Lowestday: ", lowestDayData);
+      console.log("Averageday: ", averageDayData);
+
+      
 
       result.push({
         location: locationName,
@@ -286,8 +293,15 @@ export class DataComponent implements OnInit {
     const longitude = record.location.longitude.toString();
     const latitude = record.location.latitude.toString();
     let start = this.getFirstTimestamp(record.sensorData);
-    const end = this.getLastTimestamp(record.sensorData);
-    this.weather = await this.weatherService.getWeather(parseInt(latitude), parseInt(longitude), this.unixTimeToDateFormat(start), this.unixTimeToDateFormat(end));
+    const today = Math.floor(new Date().getTime() / 1000); 
+    const end = this.getLastTimestamp(record.sensorData) > today ? today : this.getLastTimestamp(record.sensorData);
+
+    this.weather = await this.weatherService.getWeather(
+      parseInt(latitude), 
+      parseInt(longitude), 
+      this.unixTimeToDateFormat(start), 
+      this.unixTimeToDateFormat(end)
+    );
     return await this.updateRecordWithWeather(record, this.weather);
   }
 
@@ -341,13 +355,18 @@ export class DataComponent implements OnInit {
 
     this.start = timestamp;
     let daysOverview: any = [];
+    
     this.data.forEach((record: any) => {
       const data = this.findBusyDays(timestamp, record.sensorData);
       daysOverview.push(data);
     });
 
     const maxAndMinDays: { highestDay: string; lowestDay: string; } = this.makeAverages(daysOverview);
+    console.log("maxmin", maxAndMinDays);
+    
     const clearData: DataSortedForGraph[] = this.getTopDay(maxAndMinDays);
+    console.log("Cleardata: " ,clearData);
+    
     this.setGraphsValues(clearData);
     const weatherDataset = this.setWeatherValues(clearData);
     this.initGraphs(this.datasets, weatherDataset, maxAndMinDays);
@@ -356,6 +375,8 @@ export class DataComponent implements OnInit {
   initGraphs(cyclistsDataset: any, weatherDataset: WeatherDataSortedForGraph, maxAndMinDays: { highestDay: string; lowestDay: string;}) {
     const labels = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'];
 
+    console.log("Dataset In Init graph: ", cyclistsDataset);
+    
     this.graphs = [
       {
         chartId: "ComparisonGraph3",
@@ -466,7 +487,9 @@ export class DataComponent implements OnInit {
 
 
   setGraphsValues(data: any) {
-    let colors = ["red", "green", "blue", "yellow", "purple", "brown", "pink",];
+    let colors = ["red", "green", "blue", "yellow", "purple", "brown", "pink"];
+    console.log("Data1: ", data);
+    
     data.forEach((record: any, index: number) => {
       let counts: number[] = [];
       record.data.high = this.fillMissingTimes(record.data.high);
@@ -517,6 +540,8 @@ export class DataComponent implements OnInit {
       this.datasets.high.push(datasetHigh);
       this.datasets.low.push(datasetLow);
       this.datasets.average.push(datasetAverage);
+      console.log("Dataset by mal byt full: ", this.datasets);
+      
 
     });
   }

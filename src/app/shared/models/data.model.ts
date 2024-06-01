@@ -15,7 +15,8 @@ export interface DeviceData {
         route: string,
         streetNumber: string
     },
-    apiUrl: string
+    apiUrl: string,
+    battery?: number;
 }
 
 export interface AddressData {

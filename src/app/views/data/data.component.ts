@@ -348,9 +348,13 @@ export class DataComponent implements OnInit {
       daysOverview.push(data);
     });
 
-    const maxAndMinDays: { highestDay: string; lowestDay: string; } = this.makeAverages(daysOverview);
+    const maxAndMinDays: { highestDay: string; lowestDay: string } = 
+    timestamp <= (this.getSingleStringDateMethod(today) - 86400 * 7) 
+    ? this.makeAverages(daysOverview) 
+    : { highestDay: '', lowestDay: '' };   
+     console.log("minmax: ", maxAndMinDays);
+     
     const clearData: DataSortedForGraph[] = this.getTopDay(maxAndMinDays, timestamp);
-
     this.setGraphsValues(clearData);
     const weatherDataset = this.setWeatherValues(clearData);
     this.initGraphs(this.datasets, weatherDataset, maxAndMinDays);
@@ -361,14 +365,14 @@ export class DataComponent implements OnInit {
     this.graphs = [
       {
         chartId: "ComparisonGraph3",
-        chartHeading: 'Priemerne najviac vytazeny den - ' + maxAndMinDays.highestDay,
+        chartHeading: 'Priemerne najviac vyťažený deň - ' + maxAndMinDays.highestDay,
         dataset: cyclistsDataset.high,
         weather: weatherDataset.high,
         labels: labels
       },
       {
         chartId: "ComparisonGraph4",
-        chartHeading: 'Priemerne najmenej vytazeny den - ' + maxAndMinDays.lowestDay,
+        chartHeading: 'Priemerne najmenej vyťažený deň - ' + maxAndMinDays.lowestDay,
         dataset: cyclistsDataset.low,
         weather: weatherDataset.low,
         labels: labels
@@ -397,7 +401,7 @@ export class DataComponent implements OnInit {
       };
       weatherDatasets.high.push(weatherDatasetHigh);
       const precipitationDatasetHigh: WeatherDataset = {
-        label: "Zrazky" + record.location,
+        label: "Zrážky" + record.location,
         type: 'bar',
         data: weather.rain,
         backgroundColor: 'rgba(255, 99, 132, 1)',
@@ -416,7 +420,7 @@ export class DataComponent implements OnInit {
       };
       weatherDatasets.low.push(weatherDatasetLow);
       const precipitationDatasetLow: WeatherDataset = {
-        label: "Zrazky" + record.location,
+        label: "Zrážky" + record.location,
         type: 'bar',
         data: weather.rain,
         backgroundColor: 'rgba(255, 99, 132, 1)',
@@ -435,7 +439,7 @@ export class DataComponent implements OnInit {
       };
       weatherDatasets.average.push(weatherDatasetAverage);
       const precipitationDatasetAverage: WeatherDataset = {
-        label: "Zrazky" + record.location,
+        label: "Zrážky" + record.location,
         type: 'bar',
         data: weather.rain,
         backgroundColor: 'rgba(255, 99, 132, 1)',

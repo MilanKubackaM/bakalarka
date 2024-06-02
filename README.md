@@ -1,4 +1,5 @@
 # Webová aplikácia a obslužné prostredie na vyhodnocovanie pohybu cyklistov
+## Link: https://bakalarka-27e39.web.app/
 
 ## Úvodná stránka
 - Obsahuje navigačné menu s možnosťou prihlásenia. V prípade, že je používateľ prihlásený, menu sa prispôsobí a prihlásenie sa zmení na nastavenia

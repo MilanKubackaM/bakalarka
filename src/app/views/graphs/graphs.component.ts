@@ -1,7 +1,6 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../shared/services/data/data.service';
 import { Data } from '../../shared/models/data.model';
-import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { Chart } from 'chart.js/auto';
 
 @Component({
@@ -21,16 +20,14 @@ export class GraphsComponent implements OnInit {
   usersData: any;
 
 
-
   constructor(
     private dataService: DataService,
   ) {
     this.startDate.setDate(this.endDate.getDate() - 1);
   }
 
-
   ngOnInit() {
-    this.selectedLocation = { location: this.locations[0].location, url: ''};
+    this.selectedLocation = { location: this.locations[0].location, url: '' };
     this.getAllData();
     this.checkCurrentLocation();
     this.createChart();
@@ -46,7 +43,6 @@ export class GraphsComponent implements OnInit {
         console.error('Chyba pri získavaní údajov o používateľoch:', error);
       }
     );
-
   }
 
   setLocations() {
@@ -58,7 +54,6 @@ export class GraphsComponent implements OnInit {
       })
     })
   }
-
 
   checkCurrentLocation() {
     this.dataService.checkCurrentLocation()
@@ -119,9 +114,7 @@ export class GraphsComponent implements OnInit {
 
       const startDate = this.startDate;
       const endDate = this.endDate;
-
-      endDate.setHours(23, 59, 59, 999); 
-
+      endDate.setHours(23, 59, 59, 999);
       const dates: string[] = [];
       const cyklisti: number[] = [];
       const teploty: number[] = [];
@@ -161,14 +154,14 @@ export class GraphsComponent implements OnInit {
     });
   }
 
-  updateChart(dates: any, cyklisti: any, teploty: any){
+  updateChart(dates: any, cyklisti: any, teploty: any) {
     this.chart.data.labels = dates;
     this.chart.data.datasets[0].data = cyklisti;
     this.chart.data.datasets[1].data = teploty;
     this.chart.update();
   }
 
-  createNewGraph(dates: any, cyklisti: any, teploty: any){
+  createNewGraph(dates: any, cyklisti: any, teploty: any) {
     this.chart = new Chart("MyChart", {
       type: 'line',
       data: {
@@ -192,18 +185,18 @@ export class GraphsComponent implements OnInit {
     })
   }
 
-  chooseUnit(){
+  chooseUnit() {
     switch (this.unit) {
       case 'seconds':
-        return this.interval / 60; 
+        return this.interval / 60;
       case 'minutes':
-        return this.interval; 
+        return this.interval;
       case 'hours':
-        return this.interval * 60; 
+        return this.interval * 60;
       case 'days':
         return this.interval * 24 * 60;
       default:
-        return 60; 
+        return 60;
     }
   }
 
@@ -218,7 +211,4 @@ export class GraphsComponent implements OnInit {
 
     return new Intl.DateTimeFormat('en-US', options).format(date);
   }
-
 }
-
-

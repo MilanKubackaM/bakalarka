@@ -27,8 +27,6 @@ export interface AddressData {
     city: string;
 }
 
-
-
 export interface Graph {
     chartId: string,
     chartHeading: string,
@@ -105,5 +103,7 @@ export interface WeatherDataSortedForGraph {
     average: WeatherDataset[]
 }
 
-
-
+export interface WeatherDataEntry {
+    rain: number;
+    temperature: number;
+}

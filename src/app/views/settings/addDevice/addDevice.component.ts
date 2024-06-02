@@ -1,9 +1,7 @@
 import { Component, ElementRef, Input, NgZone, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocomplete } from '@angular/material/autocomplete';
-import { Observable, of } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
-import { MatDialog } from '@angular/material/dialog';
 import { DataService } from 'src/app/shared/services/data/data.service';
 import { ToastrService } from 'ngx-toastr';
 import { AddressData } from 'src/app/shared/models/data.model';
@@ -41,6 +39,7 @@ export class AddDeviceComponent implements OnInit {
   settingsForm!: FormGroup;
   apiUrl: string = '';
   counterName: string = '';
+  public savingData: boolean = false;
 
   loadingApiTest: boolean = false;
   apiTestPassed: boolean = false;
@@ -63,7 +62,6 @@ export class AddDeviceComponent implements OnInit {
     const formattedAddress = `${event.route} ${event.streetNumber}, ${event.city}`;
     this.settingsForm.get('location')?.setValue(formattedAddress);
     this.location = event;
-    console.log(this.location);
   }
 
   displayFn(option: Option): string {
@@ -81,7 +79,6 @@ export class AddDeviceComponent implements OnInit {
     this.closebutton.nativeElement.click();
   }
 
-  public savingData: boolean = false;
 
   onSubmit() {
     this.savingData = true;
@@ -143,6 +140,4 @@ export class AddDeviceComponent implements OnInit {
       this.closeButton.nativeElement.click();
     }
   }
-
 }
-

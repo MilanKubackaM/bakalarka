@@ -31,16 +31,15 @@
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <li>
-                  <a class="dropdown-item" data-bs-toggle="modal"
-                    data-bs-target="#addDeviceModal"><strong>Pridať sčítač</strong></a>
+                  <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addDeviceModal"><strong>Pridať
+                      sčítač</strong></a>
                 </li>
                 <li>
-                  <a class="dropdown-item" data-bs-toggle="modal"
-                    data-bs-target="#myDevicesModal"><strong>Moje sčítače</strong></a>
+                  <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#myDevicesModal"><strong>Moje
+                      sčítače</strong></a>
                 </li>
                 <li>
-                  <a class="dropdown-item bg-danger text-white rounded" 
-                  (click)="logout()">Odhlásiť</a>
+                  <a class="dropdown-item bg-danger text-white rounded" (click)="logout()">Odhlásiť</a>
                 </li>
               </ul>
             </div>
@@ -73,8 +72,3 @@
   </div>
 </div>
 
-<div [class.hidden]="!loggedUser">
-  <div id="logOutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-    <app-log-out></app-log-out>
-  </div>
-</div>

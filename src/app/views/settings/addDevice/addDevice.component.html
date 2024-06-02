@@ -5,7 +5,6 @@
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" #closebutton></button>
     </div>
     <div class="modal-body">
-      <!-- <p>Pre pridanie vlastného zariadenia si prečítaj presné inštrukcie TU</p> -->
 
       <form [formGroup]="settingsForm">
         <div class="mb-3">
@@ -25,7 +24,7 @@
 
         <div class="mb-3">
           <label class="form-label">Adresa</label>
-          <input #inputField id="inputField" type="text" class="form-control" [(ngModel)]="location"
+          <input #inputField id="inputField" type="text" class="form-control"
             formControlName="location" placeholder="Zadaj miesto, kde sa sčítač nachádza">
           <button type="button" class="btn btn-success mt-3" (click)="toggleMap()">Vyhľadaj na mape</button>
           <div *ngIf="settingsForm.get('location')?.invalid && settingsForm.get('location')?.touched"

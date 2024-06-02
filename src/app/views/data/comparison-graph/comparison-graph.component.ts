@@ -35,10 +35,7 @@ export class ComparisonGraphComponent implements OnInit {
     }
   }
 
-
   ngOnInit() {
-    console.log("Dataset: ", this.dataset);
-    
     Chart.register(...registerables);
     const canvasElement = document.getElementById("chartForComparison");
 

@@ -23,7 +23,6 @@ export class OverviewMapComponent implements OnInit {
     this.initMap();
   }
 
-
   initMap() {
     const initialPosition = { lat: 48.148598, lng: 17.107748 };
     this.map = new google.maps.Map(document.getElementById('map') as HTMLElement, {
@@ -114,7 +113,7 @@ export class OverviewMapComponent implements OnInit {
 
   appendInfoWindow(marker: google.maps.Marker, location: any) {
     const infoWindow = new google.maps.InfoWindow({
-      content: this.createContentForInfo(location.deviceName || "Nazov neznamy", "Dnesny pocet prejazdov: ", "ieco dalsie", location.data)
+      content: this.createContentForInfo(location.deviceName || "Názov neznámy", "Dnešný počet prejazdov: ", "", location.data)
     });
 
     marker.addListener('click', () => {
@@ -151,5 +150,4 @@ export class OverviewMapComponent implements OnInit {
 
     return contentString;
   }
-
 }

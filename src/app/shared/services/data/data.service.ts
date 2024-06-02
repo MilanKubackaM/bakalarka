@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { AddressData, Data, DeviceData } from '../../models/data.model';
 import { getDatabase } from "firebase/database";
 import { AngularFirestore } from '@angular/fire/compat/firestore'; 
 import { ToastrService } from 'ngx-toastr';
 import 'firebase/firestore';
-
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +17,6 @@ export class DataService {
     private firestore: AngularFirestore,
     private toastr: ToastrService
   ) { }
-
 
 
   // ---------------------------------------------------------//
@@ -79,7 +77,6 @@ export class DataService {
   // ------------------- F I R E B A S E ---------------------//
   // ---------------------------------------------------------//
 
-  // private database = getDatabase();
   getFirebaseDatabase() {
     return getDatabase();
   }
@@ -166,8 +163,6 @@ export class DataService {
     return globalDataDocRef.get().toPromise()
       .then((globalDataSnapshot) => {
         if (globalDataSnapshot?.exists) {
-          const globalData = globalDataSnapshot.data() as { numberOfCities: number; numberOfDevices: number };
-  
           return globalDataDocRef.collection('cities').get().toPromise()
             .then((citiesSnapshot) => {
               let totalDevices = 0;
@@ -220,7 +215,6 @@ export class DataService {
 
     return this.firestore.firestore.runTransaction(async (transaction) => {
       const globalDataSnapshot = await transaction.get(globalDataDocRef.ref);
-
       if (globalDataSnapshot.exists) {
         const cityDataSnapshot = await transaction.get(cityDocRef.ref);
         if (cityDataSnapshot.exists) {
@@ -250,50 +244,6 @@ export class DataService {
     });
   }
 
-
-  // ---------------------------------------------------------//
-  // ------- https://opendata.bratislava.sk/en/page/doc ------//
-  // ---------------------------------------------------------//
-
-  private openDataUrl = "http://opendata.bratislava.sk/api";
-
-  getOpenDataCategories() {
-    return this.http.get(`${this.openDataUrl}/category`);
-  }
-
-  // ---------------------------------------------------------//
-  // --------------- https://openweathermap.org --------------//
-  // ---------------------------------------------------------//
-
-  // // TODO: presunut api keys do configu
-  // public apiKeyOpenWeather = "60a1d896c5e7d2442a2bc3e350a66464";
-
-  // getWeatherHistoryFromOpenWeather(start: number | null, end: number | null, lat: string, lon: string): Observable<any[]> {
-  //   const openWeatherHistory = `https://history.openweathermap.org/data/2.5/history/city?lat=${lat}&lon=${lon}&type=hour&start=${start}&end=${end}&appid=${this.apiKeyOpenWeather}`;
-  //   return this.http.get<any[]>(openWeatherHistory);
-  // }
-  // ---------------------------------------------------------//
-  // ----------------- https://emeteo.sk ---------------------//
-  // ---------------------------------------------------------//
-
-  // // TODO: presunut api keys do configu
-  // private api_id = "753f0b9fccc49d44";
-  // private api_key = "3be68d9bc9de4dff61389ec949e504d8";
-  // private emeteoUrl = `https://emeteo.sk/api/get/current_weather?api_id=${this.api_id}&api_key=${this.api_key}&station_url=vajnory`;
-
-  // getEmeteoData(stationUrl: string): Observable<any> {
-  //   const headers = new HttpHeaders()
-  //     .set('api_id', this.api_id)
-  //     .set('api_key', this.api_key)
-  //     .set('station_url', stationUrl);
-
-  //   const options = {
-  //     headers: headers,
-  //   };
-  //   return this.http.get<any>(this.emeteoUrl, options);
-  // }
-
-
   checkCurrentLocation() {
     return new Promise<{ latitude: number; longitude: number }>((resolve, reject) => {
       if (navigator.geolocation) {
@@ -312,5 +262,4 @@ export class DataService {
       }
     });
   }
-
 }

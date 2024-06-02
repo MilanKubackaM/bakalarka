@@ -19,13 +19,13 @@ export class DataComponent implements OnInit {
     private weatherService: WeatherService
   ) { }
 
-  selectedTime: string = 'today'; 
+  selectedTime: string = 'today';
   graphs: Graph[] = [];
   pickedLocations: Location[] = [];
   locations: Location[] = [];
   form = new FormControl('');
   data: FinalData[] = [];
-  datasets: { high: CyclistDataset[], low: CyclistDataset[] , average: CyclistDataset[]} = { high: [], low: [] , average: []};
+  datasets: { high: CyclistDataset[], low: CyclistDataset[], average: CyclistDataset[] } = { high: [], low: [], average: [] };
   maxAndMinDays: any;
   weather: any;
   showWeather: boolean = false;
@@ -47,7 +47,7 @@ export class DataComponent implements OnInit {
 
   resetInputs() {
     this.graphs = [];
-    this.datasets = { high: [], low: [] , average: []};
+    this.datasets = { high: [], low: [], average: [] };
     this.data = [];
   }
 
@@ -56,7 +56,6 @@ export class DataComponent implements OnInit {
     this.pickedLocations = event.value;
     this.getDataForSelectedLocations();
   }
-
 
   onTimeChange(event: any) {
     this.selectedTime = event;
@@ -95,7 +94,7 @@ export class DataComponent implements OnInit {
               location: location,
               sensorData: indexedData
             };
-         
+
             const updatedRecord = await this.appendWeatherToRecord(record);
             this.data.push(updatedRecord);
 
@@ -110,10 +109,13 @@ export class DataComponent implements OnInit {
   }
 
 
-  getTopDay(averages: { highestDay: string; lowestDay: string; }) {
+  getTopDay(averages: { highestDay: string; lowestDay: string; }, timestampFrom: number): DataSortedForGraph[] {
     const data = this.data;
     let result: DataSortedForGraph[] = [];
-    
+
+    timestampFrom -= 86400;
+    const today = Math.floor(Date.now() / 1000);
+    const yesterday = today - 86400;
 
     data.forEach((locationData: any) => {
       const locationName = locationData.location.location;
@@ -124,46 +126,41 @@ export class DataComponent implements OnInit {
       const lowestDayData: { time: string; cyclists: number; temperature: number; rain: number }[] = [];
       const averageDayData: { time: string; cyclists: number; temperature: number; rain: number }[] = [];
 
-      const highDataByTime: { [key: string]: { cyclists: number[]; temperature: number[]; rain: number[] } } = {};
-      const lowDataByTime: { [key: string]: { cyclists: number[]; temperature: number[]; rain: number[] } } = {};
-      const averageDataByTime: { [key: string]: { cyclists: number[]; temperature: number[]; rain: number[] } } = {};
-
       for (const timestamp in sensorData) {
         if (Object.prototype.hasOwnProperty.call(sensorData, timestamp)) {
           const recordTimestamp = parseInt(timestamp);
+
+          if (timestampFrom >= yesterday) {
+            if (recordTimestamp < timestampFrom || recordTimestamp > yesterday) {
+              continue;
+            }
+          } else {
+            if (recordTimestamp < timestampFrom || recordTimestamp > today) {
+              continue;
+            }
+          }
+
+
           const dayOfWeek = this.getDayOfWeekFromUnixTimestamp(recordTimestamp);
-          console.log("den v tyzdni: ", dayOfWeek);
-          
           const time = this.formatTimestampToHour(recordTimestamp);
           const cyclists = sensorData[timestamp].cyclists;
           const temperature = sensorData[timestamp].temperature;
           const rain = sensorData[timestamp].rain;
 
-          if(parseInt(time.split(':')[0]) <= 19){
-            switch (dayOfWeek){
+          if (parseInt(time.split(':')[0]) <= 19 && 8 <= parseInt(time.split(':')[0])) {
+
+            switch (dayOfWeek) {
               case highestDay:
                 highestDayData.push({ time, cyclists, temperature, rain });
-                this.addToTimeData(highDataByTime, time, cyclists, temperature, rain);
                 break;
               case lowestDay:
                 lowestDayData.push({ time, cyclists, temperature, rain });
-                this.addToTimeData(lowDataByTime, time, cyclists, temperature, rain);
                 break;
             }
-            this.addToTimeData(averageDataByTime, time, cyclists, temperature, rain);
+            averageDayData.push({ time, cyclists, temperature, rain });
           }
         }
       }
-
-      this.calculateAverageForTimeData(highestDayData, highDataByTime);
-      this.calculateAverageForTimeData(lowestDayData, lowDataByTime);
-      this.calculateAverageForTimeData(averageDayData, averageDataByTime);
-
-      console.log("Highestday: ", highestDayData);
-      console.log("Lowestday: ", lowestDayData);
-      console.log("Averageday: ", averageDayData);
-
-      
 
       result.push({
         location: locationName,
@@ -178,6 +175,7 @@ export class DataComponent implements OnInit {
     return result;
   }
 
+
   addToTimeData(timeData: { [key: string]: { cyclists: number[]; temperature: number[]; rain: number[] } }, time: string, cyclists: number, temperature: number, rain: number) {
     if (!timeData[time]) {
       timeData[time] = { cyclists: [], temperature: [], rain: [] };
@@ -185,17 +183,6 @@ export class DataComponent implements OnInit {
     timeData[time].cyclists.push(cyclists);
     timeData[time].temperature.push(temperature);
     timeData[time].rain.push(rain);
-  }
-
-  calculateAverageForTimeData(dayData: { time: string; cyclists: number; temperature: number; rain: number }[], timeData: { [key: string]: { cyclists: number[]; temperature: number[]; rain: number[] } }) {
-    for (const time in timeData) {
-      if (Object.prototype.hasOwnProperty.call(timeData, time)) {
-        const averageCyclists = this.calculateAverage(timeData[time].cyclists);
-        const averageTemperature = this.calculateAverage(timeData[time].temperature);
-        const averageRain = this.calculateAverage(timeData[time].rain);
-        dayData.push({ time, cyclists: averageCyclists, temperature: averageTemperature, rain: averageRain });
-      }
-    }
   }
 
   calculateAverage(values: number[]) {
@@ -293,20 +280,20 @@ export class DataComponent implements OnInit {
     const longitude = record.location.longitude.toString();
     const latitude = record.location.latitude.toString();
     let start = this.getFirstTimestamp(record.sensorData);
-    const today = Math.floor(new Date().getTime() / 1000); 
+    const today = Math.floor(new Date().getTime() / 1000);
     const end = this.getLastTimestamp(record.sensorData) > today ? today : this.getLastTimestamp(record.sensorData);
 
     this.weather = await this.weatherService.getWeather(
-      parseInt(latitude), 
-      parseInt(longitude), 
-      this.unixTimeToDateFormat(start), 
+      parseInt(latitude),
+      parseInt(longitude),
+      this.unixTimeToDateFormat(start),
       this.unixTimeToDateFormat(end)
     );
     return await this.updateRecordWithWeather(record, this.weather);
   }
 
   async updateRecordWithWeather(record: FinalData, weather: any) {
-    
+
     const updatedRecord: FinalData = { ...record };
     for (const timestamp in updatedRecord.sensorData) {
       if (updatedRecord.sensorData.hasOwnProperty(timestamp)) {
@@ -355,28 +342,22 @@ export class DataComponent implements OnInit {
 
     this.start = timestamp;
     let daysOverview: any = [];
-    
+
     this.data.forEach((record: any) => {
       const data = this.findBusyDays(timestamp, record.sensorData);
       daysOverview.push(data);
     });
 
     const maxAndMinDays: { highestDay: string; lowestDay: string; } = this.makeAverages(daysOverview);
-    console.log("maxmin", maxAndMinDays);
-    
-    const clearData: DataSortedForGraph[] = this.getTopDay(maxAndMinDays);
-    console.log("Cleardata: " ,clearData);
-    
+    const clearData: DataSortedForGraph[] = this.getTopDay(maxAndMinDays, timestamp);
+
     this.setGraphsValues(clearData);
     const weatherDataset = this.setWeatherValues(clearData);
     this.initGraphs(this.datasets, weatherDataset, maxAndMinDays);
   }
 
-  initGraphs(cyclistsDataset: any, weatherDataset: WeatherDataSortedForGraph, maxAndMinDays: { highestDay: string; lowestDay: string;}) {
+  initGraphs(cyclistsDataset: any, weatherDataset: WeatherDataSortedForGraph, maxAndMinDays: { highestDay: string; lowestDay: string; }) {
     const labels = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'];
-
-    console.log("Dataset In Init graph: ", cyclistsDataset);
-    
     this.graphs = [
       {
         chartId: "ComparisonGraph3",
@@ -406,65 +387,65 @@ export class DataComponent implements OnInit {
     let weatherDatasets: WeatherDataSortedForGraph = { high: [], low: [], average: [] };
 
     clearData.forEach((record: any) => {
-        let weather = this.setWeather(record.data.high);
-        const weatherDatasetHigh: WeatherDataset = {
-            label: "Teplota" + record.location,
-            type: 'bar',
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            data: weather.temperature,
-            borderWidth: 1
-        };
-        weatherDatasets.high.push(weatherDatasetHigh);
-        const precipitationDatasetHigh: WeatherDataset = {
-            label: "Zrazky" + record.location,
-            type: 'bar',
-            data: weather.rain,
-            backgroundColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1
-        };
-        weatherDatasets.high.push(precipitationDatasetHigh);
+      let weather = this.setWeather(record.data.high);
+      const weatherDatasetHigh: WeatherDataset = {
+        label: "Teplota" + record.location,
+        type: 'bar',
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        data: weather.temperature,
+        borderWidth: 1
+      };
+      weatherDatasets.high.push(weatherDatasetHigh);
+      const precipitationDatasetHigh: WeatherDataset = {
+        label: "Zrazky" + record.location,
+        type: 'bar',
+        data: weather.rain,
+        backgroundColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1
+      };
+      weatherDatasets.high.push(precipitationDatasetHigh);
 
 
-        weather = this.setWeather(record.data.low);
-        const weatherDatasetLow: WeatherDataset = {
-            label: "Teplota" + record.location,
-            type: 'bar',
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            data: weather.temperature,
-            borderWidth: 1
-        };
-        weatherDatasets.low.push(weatherDatasetLow);
-        const precipitationDatasetLow: WeatherDataset = {
-            label: "Zrazky" + record.location,
-            type: 'bar',
-            data: weather.rain,
-            backgroundColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1
-        };
-        weatherDatasets.low.push(precipitationDatasetLow);
+      weather = this.setWeather(record.data.low);
+      const weatherDatasetLow: WeatherDataset = {
+        label: "Teplota" + record.location,
+        type: 'bar',
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        data: weather.temperature,
+        borderWidth: 1
+      };
+      weatherDatasets.low.push(weatherDatasetLow);
+      const precipitationDatasetLow: WeatherDataset = {
+        label: "Zrazky" + record.location,
+        type: 'bar',
+        data: weather.rain,
+        backgroundColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1
+      };
+      weatherDatasets.low.push(precipitationDatasetLow);
 
 
-        weather = this.setWeather(record.data.average);
-        const weatherDatasetAverage: WeatherDataset = {
-            label: "Teplota" + record.location,
-            type: 'bar',
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            data: weather.temperature,
-            borderWidth: 1
-        };
-        weatherDatasets.average.push(weatherDatasetAverage);
-        const precipitationDatasetAverage: WeatherDataset = {
-            label: "Zrazky" + record.location,
-            type: 'bar',
-            data: weather.rain,
-            backgroundColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1
-        };
-        weatherDatasets.average.push(precipitationDatasetAverage);
+      weather = this.setWeather(record.data.average);
+      const weatherDatasetAverage: WeatherDataset = {
+        label: "Teplota" + record.location,
+        type: 'bar',
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        data: weather.temperature,
+        borderWidth: 1
+      };
+      weatherDatasets.average.push(weatherDatasetAverage);
+      const precipitationDatasetAverage: WeatherDataset = {
+        label: "Zrazky" + record.location,
+        type: 'bar',
+        data: weather.rain,
+        backgroundColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1
+      };
+      weatherDatasets.average.push(precipitationDatasetAverage);
     });
 
     return weatherDatasets;
-}
+  }
 
 
   setWeather(data: any) {
@@ -488,14 +469,12 @@ export class DataComponent implements OnInit {
 
   setGraphsValues(data: any) {
     let colors = ["red", "green", "blue", "yellow", "purple", "brown", "pink"];
-    console.log("Data1: ", data);
-    
     data.forEach((record: any, index: number) => {
       let counts: number[] = [];
       record.data.high = this.fillMissingTimes(record.data.high);
       record.data.low = this.fillMissingTimes(record.data.low);
       record.data.average = this.fillMissingTimes(record.data.average);
-      
+
       record.data.high.forEach((data: any) => {
         counts.push(data.cyclists)
       });
@@ -540,9 +519,6 @@ export class DataComponent implements OnInit {
       this.datasets.high.push(datasetHigh);
       this.datasets.low.push(datasetLow);
       this.datasets.average.push(datasetAverage);
-      console.log("Dataset by mal byt full: ", this.datasets);
-      
-
     });
   }
 
@@ -646,8 +622,8 @@ export class DataComponent implements OnInit {
 
   getSingleStringDateMethod(date: any): number {
     const dateObject = new Date(date);
-    const timestamp = dateObject.getTime(); 
-    const timestampInSeconds = Math.floor(timestamp / 1000); 
+    const timestamp = dateObject.getTime();
+    const timestampInSeconds = Math.floor(timestamp / 1000);
     return timestampInSeconds;
   }
 }

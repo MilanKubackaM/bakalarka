@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BaseComponent } from './views/base/base.component';
@@ -11,7 +10,7 @@ import { GraphsComponent } from './views/graphs/graphs.component';
 import { OverviewMapComponent } from './views/overviewMap/overviewMap.component';
 import { LoginComponent } from './views/login/login.component';
 import { DataComponent } from './views/data/data.component';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { environment } from '../enviroments/environment';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireModule } from '@angular/fire/compat';
@@ -28,7 +27,6 @@ import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MapComponent } from "./views/settings/map/map.component";
-import { LogOutComponent } from "./views/settings/log-out/log-out.component";
 import { ToastrModule } from 'ngx-toastr';
 import { MyDevicesComponent } from "./views/settings/my-devices/my-devices.component";
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -83,7 +81,6 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
         MatCheckboxModule,
         FormsModule,
         MapComponent,
-        LogOutComponent,
         ToastrModule.forRoot(),
         MyDevicesComponent,
         ModalModule.forRoot(),

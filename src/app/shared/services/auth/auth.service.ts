@@ -21,13 +21,13 @@ export class AuthService {
 
   private userSubject = new BehaviorSubject<User | null>(null);
   public user$: Observable<User | null> = this.userSubject.asObservable().pipe(filter(user => user !== null));
-  private user: User | null = null; 
+  private user: User | null = null;
 
   getCurrentUser(): User | null {
     return this.user;
   }
 
-  getCurrentUserUID(): string{
+  getCurrentUserUID(): string {
     return this.user?.uid || '';
   }
 

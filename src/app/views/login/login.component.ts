@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { AuthService } from '../../shared/services/auth/auth.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -7,19 +7,17 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   constructor(
     private authService: AuthService,
-  ) {}
+  ) { }
 
   isLoginVisible: boolean = true;
   @Output() loginSuccess: EventEmitter<string> = new EventEmitter<string>();
   alreadyLoggedIn = false;
   @ViewChild('closebutton') closebutton: any;
 
-  ngOnInit() {
-  }
 
   registerForm: FormGroup = new FormGroup({
     username: new FormControl('', [Validators.required, Validators.email]),

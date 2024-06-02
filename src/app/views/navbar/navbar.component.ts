@@ -13,14 +13,11 @@ export class NavbarComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private scrollService: ScrollService,
-  ) {
-  }
+  ) { }
   loggedUser: User | null = null;
   alreadyLoggedIn = false;
   showSettings: boolean = false;
   createSettings = false;
-
-
 
   ngOnInit() {
     this.loadLoggedUser();
@@ -63,13 +60,11 @@ export class NavbarComponent implements OnInit {
     document.getElementById("overviewMap")?.scrollIntoView({ behavior: "smooth" });
   }
 
-  createSettingsComponent(){
+  createSettingsComponent() {
     this.createSettings = true;
-    
   }
 
-  logout(){
+  logout() {
     this.authService.signOut();
   }
-
 }

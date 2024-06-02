@@ -93,7 +93,7 @@ export class MapComponent implements OnInit {
 
   placeMarker(location: google.maps.LatLng) {
     if (this.marker) {
-      this.marker.setMap(null); // Odstrániť predchádzajúci marker
+      this.marker.setMap(null);
     }
     this.marker = new google.maps.Marker({
       position: location,

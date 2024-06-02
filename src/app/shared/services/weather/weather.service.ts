@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { fetchWeatherApi } from 'openmeteo';
-
+import { WeatherDataEntry } from '../../models/data.model';
 
 @Injectable({
   providedIn: 'root'
@@ -47,12 +47,6 @@ export class WeatherService {
         };
       }
     }
-
     return weatherData;
   }
-}
-
-interface WeatherDataEntry {
-  rain: number;
-  temperature: number;
 }

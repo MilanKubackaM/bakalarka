@@ -1,41 +1,41 @@
-# Bakalarka
+# Webová aplikácia a obslužné prostredie na vyhodnocovanie pohybu cyklistov
 
-## Uvodna stranka
-- Obsahuje navigacne menu s moznostou prihlasenia, v pripade ze je uzivatel prihlaseny, menu sa prisposobi a prihlasenie sa zmeni na nastavenia 
-<img width="1427" alt="image" src="https://github.com/MilanKubackaM/bakalarka/assets/82218017/cc223978-c4ae-45c6-a753-c3976417aa5c">
+## Úvodná stránka
+- Obsahuje navigačné menu s možnosťou prihlásenia. V prípade, že je používateľ prihlásený, menu sa prispôsobí a prihlásenie sa zmení na nastavenia
+<img width="1425" alt="image" src="https://github.com/MilanKubackaM/bakalarka/assets/82218017/d773a9d3-b640-4de2-aca7-65e8744f1982">
 
-### Pridavanie scitaca v nastaveniach s otvorenou mapou: 
-- Nazov scitaca musi byt unikatny, co kontroluje samotny firebase
-- Zadavanie API je aktualne nastavene na tvar: <TVOJA_API>/query?db=sensor_data&q=SELECT * FROM sensor_data`
-- Uzivatel ma moznost si otvorit aj mapu a v nej zadat presne umeistenie zariadenia
-- Pred pridanim API je nutne otestovat pripojenie, pokym nebude uspesne, nieje mozne pridat zariadenie
-<img width="794" alt="image" src="https://github.com/MilanKubackaM/bakalarka/assets/82218017/949d819e-75e5-4b11-8e49-91fc29873e28">
+### Pridávanie sčítača v nastaveniach s otvorenou mapou:
+- Názov sčítača musí byť unikátny, čo kontroluje samotný Firebase
+- Zadávanie API je aktuálne nastavené na tvar: <TVOJA_API>/query?db=sensor_data&q=SELECT * FROM sensor_data
+- Používateľ má možnosť si otvoriť aj mapu a v nej zadať presné umiestnenie zariadenia
+- Pred pridaním API je nutné otestovať pripojenie, pokiaľ nebude úspešné, nie je možné pridať zariadenie
+<img width="716" alt="image" src="https://github.com/MilanKubackaM/bakalarka/assets/82218017/2565f652-d932-42be-85d3-97ced64ac0da">
 
-### Moje scitace
-- Tu je mozne si prehlaidat svoje scitace, upravit ich atributy pripadne vymazat
-<img width="648" alt="image" src="https://github.com/MilanKubackaM/bakalarka/assets/82218017/2d908224-118a-4b51-99c9-06e53c6c64fd">
+### Moje sčítače
+- Tu je možné si prehliadať svoje sčítače, ich nastavené atribúty a stav batérie
+- Na prvom sčítači je simulovaná úprava sčítača
+<img width="646" alt="image" src="https://github.com/MilanKubackaM/bakalarka/assets/82218017/73b58505-26e9-4ab3-bdfb-ed0df4eff1a0">
 
-## Vyvoj poctu cyklistov v danej lokalite
-- Tu je mozne zobrazit udaje z jedneho scitaca
-- Je mozne svolit si rozsah datumov a interval zobrazenia udajov
-- Reprezentovana teplota ovzdusia je prevzata priamo zo senzoru, udaje o pocasi poskytovane z emeteo API budu v dalsich grafoch
-<img width="1435" alt="image" src="https://github.com/MilanKubackaM/bakalarka/assets/82218017/b8c51e31-86d5-43ff-87fe-e8e8d025840a">
+## Vývoj počtu cyklistov v danej lokalite
+- Tu je možné zobraziť údaje z jedného sčítača
+- Je možné zvoliť si rozsah dátumov a interval zobrazenia údajov
+- Reprezentovaná teplota ovzdušia je prevzatá priamo zo senzoru, údaje o počasí poskytované z emeteo API budú v ďalších grafoch
+<img width="1426" alt="image" src="https://github.com/MilanKubackaM/bakalarka/assets/82218017/1e9bf04b-3af8-463e-a6f0-db1332d66269">
 
 ## Porovnania lokacii
-- Moznost vyberu a porovnania medzi vsetkymi zariadeniami
-- Dostupne su aj udaje o teplote a zrazkach na danej lokalite
-- Uzivatel ma moznost vybrat si lokacie, casovy horizont a vypnut/zapnut zobrazovanie pocasia
-- <img width="857" alt="image" src="https://github.com/MilanKubackaM/bakalarka/assets/82218017/a683b557-82e5-404e-8a39-641051dbd3bd">
-
+- Možnosť výberu a porovnania medzi všetkými zariadeniami
+- Dostupné sú aj údaje o teplote a zrážkach na danej lokalite
+- Používateľ má možnosť vybrať si lokality, časový horizont a vypnúť/zapnúť zobrazovanie počasia
+<img width="990" alt="image" src="https://github.com/MilanKubackaM/bakalarka/assets/82218017/7631d204-16b6-41e5-bdec-e34f07181ced">
 
 ### Popis grafov  
-- Prvy graf hovori o priemerne najviac vytazenom dni z vybraneho casoveho rozsahu, t.z. ze sa spocitaju dni kazdeho dna v tyzdni, a vyberie sa najviac vytazeny den
-- Druhy graf je presny opak, tam sa vybera v priemere najmenej vytazeny den v tyzdni
-- Treti graf robi priemer, nerozdeluje na zaklade dni, ale reprezentuje priemer prejazdov za konkretnu hodinu v danom dni
-<img width="1425" alt="image" src="https://github.com/MilanKubackaM/bakalarka/assets/82218017/8bef4b14-073a-43a6-bbe4-d4df54a48ba3">
+- Prvý graf hovorí o priemerne najviac vyťaženom dni z vybraného časového rozsahu, t.j. že sa spočítajú dni každého dňa v týždni a vyberie sa najviac vyťažený deň
+- Druhý graf je presný opak, tam sa vyberá v priemere najmenej vyťažený deň v týždni
+- Tretí graf robí priemer, nerozdeľuje na základe dní, ale reprezentuje priemer prejazdov za konkrétnu hodinu v danom dni
+<img width="1425" alt="image" src="https://github.com/MilanKubackaM/bakalarka/assets/82218017/bba57e0d-2580-44be-ad61-e34530cd4242">
 
 ## Mapa
-- Na konci stranky je dostupna mapa s prehladom vsetkych scitacov, kde je mozne pozriet kde sa presne nachadzaju a taktiez sa pozriet na pocet prejazdov v dnesnom dni 
-<img width="1425" alt="image" src="https://github.com/MilanKubackaM/bakalarka/assets/82218017/e0b5bf00-0f06-48fc-9e22-c3bc408ce43c">
+- Na konci stránky je dostupná mapa s prehľadom všetkých sčítačov, kde je možné pozrieť, kde sa presne nachádzajú, a taktiež sa pozrieť na počet prejazdov v dnešnom dni
+<img width="1428" alt="image" src="https://github.com/MilanKubackaM/bakalarka/assets/82218017/4615680e-fd4a-4c05-b3a6-8f22b89c3551">
 
 
